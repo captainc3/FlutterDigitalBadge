@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "257105873588",
+    "firebase_url": "https://flutter-digitalbadge.firebaseio.com",
+    "project_id": "flutter-digitalbadge",
+    "storage_bucket": "flutter-digitalbadge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257105873588:android:ec996e385a00fc9292a5e1",
+        "android_client_info": {
+          "package_name": "com.stevencorrales.sample_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257105873588-0smegjb0ovhgbtegho9s7pu8oq7b38tb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZQKEzvTL-1DVML21i9-_uLIrFt4d73Vo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257105873588-0smegjb0ovhgbtegho9s7pu8oq7b38tb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
