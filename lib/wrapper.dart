@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_app/home/home.dart';
+import 'package:sample_flutter_app/auth/auth.dart';
 
 class Wrapper extends StatelessWidget {
   @override 
@@ -7,6 +8,6 @@ class Wrapper extends StatelessWidget {
 
 
     //return either home or authenticate widget
-    return Home();
+    return Authenticate();
   }
 }
