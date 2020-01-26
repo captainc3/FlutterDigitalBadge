@@ -45,7 +45,7 @@ class _Home extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             RaisedButton(
-              color: backgroundColor,
+              color: Colors.black38,
               child: Text("Logout", style: TextStyle(color: Colors.white, fontSize: 15),),
               onPressed: () async{
                 await _auth.signOut();
@@ -97,11 +97,11 @@ class _Home extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
-                      color: backgroundColor,
+                      color: Colors.black38,
                       child: Text("Search All Projects", style: TextStyle(fontSize: 12, color: Colors.white),),
                     ),
                     RaisedButton(
-                      color: Colors.indigo,
+                      color: Colors.black38,
                       child: Text("Create New Project", style: TextStyle(fontSize: 12, color: Colors.white),),
                     ),
                   ],
@@ -111,11 +111,11 @@ class _Home extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
-                      color: backgroundColor,
+                      color: Colors.black38,
                       child: Text("My Badges", style: TextStyle(fontSize: 12, color: Colors.white),),
                     ),
                     RaisedButton(
-                      color: Colors.indigo,
+                      color: Colors.black38,
                       child: Text("Account", style: TextStyle(fontSize: 12, color: Colors.white),),
                     ),
                   ],
@@ -126,9 +126,9 @@ class _Home extends State<Home> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text("Yo", style: TextStyle(fontSize: 12, color: Colors.white),),
-                        subtitle: Text("Momma", style: TextStyle(fontSize: 12, color: Colors.white),),
-                        trailing: Text("Nig", style: TextStyle(fontSize: 12, color: Colors.white),),
+                        title: Text("Home Park Community Cleanup", style: TextStyle(fontSize: 12, color: Colors.white),),
+                        subtitle: Text("State Street", style: TextStyle(fontSize: 12, color: Colors.white),),
+                        trailing: Text("scorrales3", style: TextStyle(fontSize: 12, color: Colors.white),),
                       );
                     }, separatorBuilder: (context, index) {
                   return Divider(height: 16,);

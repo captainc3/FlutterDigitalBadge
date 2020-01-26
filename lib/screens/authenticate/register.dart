@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 
+final Color backgroundColor = Color(0xFF4A4A58);
+
 class Register extends StatefulWidget {
 
   final Function toggleView;
@@ -23,9 +25,9 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.blue[400],
+        backgroundColor: backgroundColor,
         elevation: 0.0,
         title: Text('Sign up to Digital Badge'),
           actions: <Widget>[
@@ -61,7 +63,7 @@ class _RegisterState extends State<Register> {
                   ),
                   SizedBox(height: 20.0),
                   RaisedButton(
-                    color: Colors.pink[500],
+                    color: Colors.black38,
                     child: Text(
                       'Register',
                       style: TextStyle(color: Colors.white),

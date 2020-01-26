@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 
+final Color backgroundColor = Color(0xFF4A4A58);
+
 class SignIn extends StatefulWidget {
 
   final Function toggleView;
@@ -24,9 +26,9 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.blue[400],
+        backgroundColor: backgroundColor,
         elevation: 0.0,
         title: Text('Sign in to Digital Badge'),
         actions: <Widget>[
@@ -48,6 +50,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0),
               TextFormField(
                   validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                  style: new TextStyle(color: Colors.white),
                 onChanged: (val) {
                   setState(() => email = val);
                 }
@@ -55,6 +58,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0),
               TextFormField(
                   validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
+                  style: new TextStyle(color: Colors.white),
                 obscureText: true,
                 onChanged: (val) {
                   setState(() => password = val);
@@ -62,7 +66,7 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 20.0),
               RaisedButton(
-                color: Colors.pink[500],
+                color: Colors.black38,
                 child: Text(
                   'Sign in',
                   style: TextStyle(color: Colors.white),
@@ -80,7 +84,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 12.0,),
               Text(
                 error,
-                style: TextStyle(color: Colors.red, fontSize: 14.0),
+                style: TextStyle(color: Colors.white, fontSize: 14.0),
               ),
             ],
           )
