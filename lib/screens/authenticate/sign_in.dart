@@ -26,6 +26,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: backgroundColor,
@@ -48,6 +49,7 @@ class _SignInState extends State<SignIn> {
             key: _formKey,
           child: Column(
             children: <Widget>[
+              Image(image: AssetImage('assets/skills.png'),),
               SizedBox(height: 20.0),
               TextFormField(
                   validator: (val) => val.isEmpty ? 'Enter an email' : null,
