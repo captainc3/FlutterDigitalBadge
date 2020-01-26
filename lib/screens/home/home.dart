@@ -88,7 +88,7 @@ class _Home extends State<Home> {
                         });
                       },
                     ),
-                    Text("Home", style: TextStyle(fontSize: 20, color: Colors.white),),
+                    Text("Welcome to Digital Badge!", style: TextStyle(fontSize: 20, color: Colors.white),),
                     SizedBox(height: 20, width: 20,)
                   ],
                 ),
@@ -132,7 +132,7 @@ class _Home extends State<Home> {
                       );
                     }, separatorBuilder: (context, index) {
                   return Divider(height: 16,);
-                }, itemCount: 10)
+                }, itemCount: 1)
               ],
             ),
           ),

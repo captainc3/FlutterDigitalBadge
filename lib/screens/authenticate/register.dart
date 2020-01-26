@@ -32,9 +32,11 @@ class _RegisterState extends State<Register> {
         title: Text('Sign up to Digital Badge'),
           actions: <Widget>[
             FlatButton.icon(
+                textColor: Colors.white,
                 onPressed: () {
                   widget.toggleView();
                 },
+
                 icon: Icon(Icons.person),
                 label: Text('Sign In')
             )
@@ -49,6 +51,7 @@ class _RegisterState extends State<Register> {
                   SizedBox(height: 20.0),
                   TextFormField(
                     validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                      style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
                         setState(() => email = val);
                       }
@@ -57,6 +60,7 @@ class _RegisterState extends State<Register> {
                   TextFormField(
                       obscureText: true,
                       validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
+                      style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
                         setState(() => password = val);
                       }
@@ -66,7 +70,7 @@ class _RegisterState extends State<Register> {
                     color: Colors.black38,
                     child: Text(
                       'Register',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {

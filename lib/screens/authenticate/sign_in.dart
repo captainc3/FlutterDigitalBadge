@@ -33,6 +33,7 @@ class _SignInState extends State<SignIn> {
         title: Text('Sign in to Digital Badge'),
         actions: <Widget>[
           FlatButton.icon(
+              textColor: Colors.white,
               onPressed: () {
                 widget.toggleView();
               },
@@ -69,7 +70,7 @@ class _SignInState extends State<SignIn> {
                 color: Colors.black38,
                 child: Text(
                   'Sign in',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 12),
                 ),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
