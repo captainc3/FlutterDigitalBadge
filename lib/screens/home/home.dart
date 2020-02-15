@@ -101,8 +101,16 @@ class _Home extends State<Home> {
                       child: Text("Search All Projects", style: TextStyle(fontSize: 12, color: Colors.white),),
                     ),
                     RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: (context) => CreateNew()
+                          )
+                        );
+                      },
                       color: Colors.black38,
-                      child: Text("Create New Project", style: TextStyle(fontSize: 12, color: Colors.white),),
+                      child: Text("Create New Project", style: TextStyle(fontSize: 12, color: Colors.white),)
                     ),
                   ],
                 ),
@@ -128,7 +136,7 @@ class _Home extends State<Home> {
                       return ListTile(
                         title: Text("Home Park Community Cleanup", style: TextStyle(fontSize: 12, color: Colors.white),),
                         subtitle: Text("State Street", style: TextStyle(fontSize: 12, color: Colors.white),),
-                        trailing: Text("scorrales3", style: TextStyle(fontSize: 12, color: Colors.white),),
+                        trailing: Text("scorrales3", style: TextStyle(fontSize: 12, color: Colors.white),)
                       );
                     }, separatorBuilder: (context, index) {
                   return Divider(height: 16,);
@@ -140,4 +148,95 @@ class _Home extends State<Home> {
       ),
     );
   }
+}
+
+/*
+class CreateNew extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold (
+      backgroundColor: backgroundColor,
+      appBar: AppBar(title: Text("Create New Project")),
+      body: Container(
+          child: RaisedButton(
+        onPressed: () {
+          Navigator.of(context)
+              .pop();
+        },
+        child: Text("Create Project"),
+      )
+
+      ),
+    );
+  }
+  */
+
+class CreateNew extends StatelessWidget {
+  @override
+final _formKey = GlobalKey<FormState>();
+
+// text field state
+String email = '';
+String password = '';
+String error = '';
+
+Widget build(BuildContext context) {
+  return Scaffold(
+    resizeToAvoidBottomPadding: false,
+    backgroundColor: backgroundColor,
+    appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0.0,
+        title: Text('Create New Project'),
+    ),
+    body: Container(
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                      labelText: 'Project\'s name:',
+                    ),
+                    maxLines: 1,
+                    style: new TextStyle(color: Colors.white),
+                    onChanged: (val) {
+                      //setState(() => email = val);
+                    }
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Brief description about your project:',
+                  ),
+                    maxLines: 6,
+                    style: new TextStyle(color: Colors.white),
+                    onChanged: (val) {
+                      //setState(() => email = val);
+                    }
+                ),
+
+                RaisedButton(
+                  color: Colors.black38,
+                  child: Text(
+                    'Complete Project Creation',
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                  onPressed: () async {
+
+                  },
+                ),
+                SizedBox(height: 12.0,),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red, fontSize: 14.0),
+                ),
+              ],
+            )
+        )
+    ),
+  );
+}
 }
