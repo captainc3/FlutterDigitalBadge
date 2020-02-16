@@ -38,12 +38,17 @@ class _Home extends State<Home> {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
       child: Align(
-        alignment: Alignment.bottomLeft,
+        alignment: Alignment.topLeft,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            SizedBox(height: 32,),
+            RaisedButton(
+              color: Colors.black38,
+              child: Text("Profile", style: TextStyle(color: Colors.white, fontSize: 15),),),
+            SizedBox(height: 16,),
             RaisedButton(
               color: Colors.black38,
               child: Text("Logout", style: TextStyle(color: Colors.white, fontSize: 15),),
@@ -61,10 +66,10 @@ class _Home extends State<Home> {
   Widget dashboard(context) {
     return AnimatedPositioned(
       duration: duration,
-      top: isCollapsed ? 0 : 0.2 * screenHeight,
-      bottom: isCollapsed ? 0 : 0.2 * screenHeight,
-      left: isCollapsed ? 0 : 0.6 * screenWidth,
-      right: isCollapsed ? 0 : -0.4 * screenWidth,
+      top: isCollapsed ? 0 : 0 * screenHeight,
+      bottom: isCollapsed ? 0 : 0 * screenHeight,
+      left: isCollapsed ? 0 : 0.4 * screenWidth,
+      right: isCollapsed ? 0 : -0.6 * screenWidth,
       child: Material(
         elevation: 8,
         color: backgroundColor,
@@ -115,20 +120,6 @@ class _Home extends State<Home> {
                   ],
                 ),
                 SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    RaisedButton(
-                      color: Colors.black38,
-                      child: Text("My Badges", style: TextStyle(fontSize: 12, color: Colors.white),),
-                    ),
-                    RaisedButton(
-                      color: Colors.black38,
-                      child: Text("Account", style: TextStyle(fontSize: 12, color: Colors.white),),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20,),
                 Text("Your Projects", style: TextStyle(fontSize: 16, color: Colors.white),),
                 ListView.separated(
                     shrinkWrap: true,
@@ -150,34 +141,13 @@ class _Home extends State<Home> {
   }
 }
 
-/*
-class CreateNew extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold (
-      backgroundColor: backgroundColor,
-      appBar: AppBar(title: Text("Create New Project")),
-      body: Container(
-          child: RaisedButton(
-        onPressed: () {
-          Navigator.of(context)
-              .pop();
-        },
-        child: Text("Create Project"),
-      )
-
-      ),
-    );
-  }
-  */
-
 class CreateNew extends StatelessWidget {
   @override
 final _formKey = GlobalKey<FormState>();
 
 // text field state
-String email = '';
-String password = '';
+String projectName = '';
+String description = '';
 String error = '';
 
 Widget build(BuildContext context) {
@@ -206,6 +176,7 @@ Widget build(BuildContext context) {
                       //setState(() => email = val);
                     }
                 ),
+                SizedBox(height: 10,),
                 TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -217,7 +188,7 @@ Widget build(BuildContext context) {
                       //setState(() => email = val);
                     }
                 ),
-
+                SizedBox(height: 10,),
                 RaisedButton(
                   color: Colors.black38,
                   child: Text(
