@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_app/screens/authenticate/sign_in.dart';
+import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:sample_flutter_app/services/auth.dart';
+import 'package:sample_flutter_app/screens/profile/profile.dart';
 
 
 final Color backgroundColor = Color(0xFF4A4A58);
@@ -47,7 +49,15 @@ class _Home extends State<Home> {
             SizedBox(height: 32,),
             RaisedButton(
               color: Colors.black38,
-              child: Text("Profile", style: TextStyle(color: Colors.white, fontSize: 15),),),
+              child: Text("Profile", style: TextStyle(color: Colors.white, fontSize: 15),),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(
+                  MaterialPageRoute(
+                      builder: (context) => ProfilePage()
+                  )
+              );
+            },),
             SizedBox(height: 16,),
             RaisedButton(
               color: Colors.black38,
@@ -167,11 +177,14 @@ Widget build(BuildContext context) {
               children: <Widget>[
                 TextField(
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white, width: 2.0),
+                        ),
                       labelText: 'Project\'s name:',
+                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     maxLines: 1,
-                    style: new TextStyle(color: Colors.white),
+                    style: new TextStyle(color: Colors.white, fontSize: 12),
                     onChanged: (val) {
                       //setState(() => email = val);
                     }
@@ -179,11 +192,14 @@ Widget build(BuildContext context) {
                 SizedBox(height: 10,),
                 TextField(
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2.0),
+                    ),
                     labelText: 'Brief description about your project:',
+                    labelStyle: TextStyle(color: Colors.white, fontSize: 12),
                   ),
                     maxLines: 6,
-                    style: new TextStyle(color: Colors.white),
+                    style: new TextStyle(color: Colors.white, fontSize: 12),
                     onChanged: (val) {
                       //setState(() => email = val);
                     }
@@ -199,7 +215,7 @@ Widget build(BuildContext context) {
 
                   },
                 ),
-                SizedBox(height: 12.0,),
+                SizedBox(height: 10,),
                 Text(
                   error,
                   style: TextStyle(color: Colors.red, fontSize: 14.0),
