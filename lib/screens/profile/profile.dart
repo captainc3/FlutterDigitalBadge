@@ -100,25 +100,53 @@ class _ProfilePage extends State<ProfilePage> {
                         });
                       },
                     ),
-                    Text("Profile", style: TextStyle(fontSize: 20, color: Colors.white),),
                     SizedBox(height: 20, width: 20,)
                   ],
                 ),
-                SizedBox(height: 40,),
-                Text('yo'),
+                Container(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("name", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
+                  ),
+                ),
+                SizedBox(height: 20, width: 20,),
+                Container(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Bio:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+                  ),
+                ),
                 SizedBox(height: 20,),
-                Text("Your Projects", style: TextStyle(fontSize: 16, color: Colors.white),),
-                ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                          title: Text("Home Park Community Cleanup", style: TextStyle(fontSize: 12, color: Colors.white),),
-                          subtitle: Text("State Street", style: TextStyle(fontSize: 12, color: Colors.white),),
-                          trailing: Text("scorrales3", style: TextStyle(fontSize: 12, color: Colors.white),)
-                      );
-                    }, separatorBuilder: (context, index) {
-                  return Divider(height: 16,);
-                }, itemCount: 1)
+                Container(
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    border: Border.all(
+                      color: Colors.white30,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: Text("This is my bio. I'm trying to collect as many digital badges as possible.", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                ),
+                SizedBox(height: 20,),
+                Container(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Badges Acquired:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+                  ),
+                ),
+                SizedBox(height: 20,),
+                Container(
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    border: Border.all(
+                      color: Colors.white30,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: Text("none, loser", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                ),
               ],
             ),
           ),
