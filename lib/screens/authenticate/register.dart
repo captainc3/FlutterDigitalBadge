@@ -25,11 +25,12 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0.0,
-        title: Text('Sign up to Digital Badge'),
+        title: Text('Register for Digital Badge'),
           actions: <Widget>[
             FlatButton.icon(
                 textColor: Colors.white,
@@ -48,6 +49,7 @@ class _RegisterState extends State<Register> {
             key: _formKey,
               child: Column(
                 children: <Widget>[
+                  Image(image: AssetImage('assets/skills.png'),),
                   SizedBox(height: 20.0),
                   TextFormField(
                     validator: (val) => val.isEmpty ? 'Enter an email' : null,
