@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sample_flutter_app/screens/authenticate/sign_in.dart';
 import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:sample_flutter_app/services/auth.dart';
-import 'package:sample_flutter_app/screens/profile/profile.dart';
-
+import 'package:sample_flutter_app/screens/project/createNewProject.dart';
 
 final Color backgroundColor = Color(0xFF4A4A58);
 
@@ -151,79 +149,3 @@ class _Home extends State<Home> {
   }
 }
 
-class CreateNew extends StatelessWidget {
-  @override
-final _formKey = GlobalKey<FormState>();
-
-// text field state
-String projectName = '';
-String description = '';
-String error = '';
-
-Widget build(BuildContext context) {
-  return Scaffold(
-    resizeToAvoidBottomPadding: false,
-    backgroundColor: backgroundColor,
-    appBar: AppBar(
-        backgroundColor: backgroundColor,
-        elevation: 0.0,
-        title: Text('Create New Project'),
-    ),
-    body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                      labelText: 'Project\'s name:',
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    maxLines: 1,
-                    style: new TextStyle(color: Colors.white, fontSize: 12),
-                    onChanged: (val) {
-                      //setState(() => email = val);
-                    }
-                ),
-                SizedBox(height: 10,),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    labelText: 'Brief description about your project:',
-                    labelStyle: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                    maxLines: 6,
-                    style: new TextStyle(color: Colors.white, fontSize: 12),
-                    onChanged: (val) {
-                      //setState(() => email = val);
-                    }
-                ),
-                SizedBox(height: 10,),
-                RaisedButton(
-                  color: Colors.black38,
-                  child: Text(
-                    'Complete Project Creation',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                  onPressed: () async {
-
-                  },
-                ),
-                SizedBox(height: 10,),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
-                ),
-              ],
-            )
-        )
-    ),
-  );
-}
-}

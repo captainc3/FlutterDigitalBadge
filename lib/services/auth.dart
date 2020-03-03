@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sample_flutter_app/models/user.dart';
 import 'package:sample_flutter_app/services/database.dart';
+import 'package:provider/provider.dart';
+import 'package:sample_flutter_app/main.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -49,7 +51,7 @@ Future signInAnon() async {
       FirebaseUser user = result.user;
 
       // create a new document for the user with uid
-      await DatabaseService(uid: user.uid).updateUserData('name', 'Working on my badges.', 'none');
+      await DatabaseService(uid: user.uid).setUserData('name', user.uid, 'Working on my badges.', 'none');
       return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());

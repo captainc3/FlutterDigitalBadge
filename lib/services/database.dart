@@ -7,12 +7,19 @@ class DatabaseService {
 
   final CollectionReference profiles = Firestore.instance.collection("profile");
 
-  final CollectionReference projectCollection = Firestore.instance.collection('projects');
-
-  Future updateUserData(String name, String bio, String badges) async {
+  Future setUserData(String name, String uid, String bio, String badges) async {
     return await profiles.document(uid).setData({
       'name': name,
+      'uid' : this.uid,
       'bio': bio,
+      'badges': badges,
+    });
+  }
+
+  Future setProjectData(String name, String description, String badges) async {
+    return await Firestore.instance.collection('projects').document(name).setData({
+      'name': name,
+      'description' : description,
       'badges': badges,
     });
   }
