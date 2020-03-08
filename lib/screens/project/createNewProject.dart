@@ -22,7 +22,7 @@ class _CreateNew extends State<CreateNew> {
   Widget build(BuildContext context) {
 
     Future setProjectData(String uid, String name, String description, List<String> badges) async {
-      return await Firestore.instance.collection('projects').document(name).setData({
+      return await Firestore.instance.collection('projects').document(name + ' - ' +  uid).setData({
         'uid': uid,
         'name': name,
         'description' : description,
