@@ -22,7 +22,10 @@ class _ViewProject extends State<ViewProject> {
   String badges = '';
   String updates = '';
   final List<String> selectedBadges = <String>[];
-  final List<String> values = <String>['One', 'Two', 'Free', 'Four'];
+  final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
+    'Appearance', 'Negotations', 'STEM', 'Law & Public Safety', 'Marketing', 'Human Services',
+    'Health Science', 'Government', 'Film, Media, & Entertainment', 'Education', 'Business Management',
+    'Architecture & Construction', 'Agriculture, Food, & Resources'];
 
   Widget build(BuildContext context) {
 
@@ -100,7 +103,7 @@ class _ViewProject extends State<ViewProject> {
                           borderSide: BorderSide(
                               color: Colors.white, width: 2.0),
                         ),
-                        labelText: "Updates:",
+                        labelText: "Project History:",
                         hintText: widget.projValues.updates,
                         hintStyle: TextStyle(
                             color: Colors.white, fontSize: 12),
@@ -137,6 +140,7 @@ class _ViewProject extends State<ViewProject> {
                                   ? null
                                   : Colors.transparent,
                             ),
+                            Text(value),
                           ],
                         ),
                       );

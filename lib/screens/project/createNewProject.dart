@@ -17,8 +17,10 @@ class _CreateNew extends State<CreateNew> {
   String description = '';
   String badges = '';
   final List<String> selectedBadges = <String>[];
-  final List<String> values = <String>['One', 'Two', 'Free', 'Four'];
-
+  final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
+    'Appearance', 'Negotations', 'STEM', 'Law & Public Safety', 'Marketing', 'Human Services',
+    'Health Science', 'Government', 'Film, Media, & Entertainment', 'Education', 'Business Management',
+    'Architecture & Construction', 'Agriculture, Food, & Resources'];
   Widget build(BuildContext context) {
 
     Future setProjectData(String uid, String name, String description, List<String> badges) async {
@@ -76,15 +78,7 @@ class _CreateNew extends State<CreateNew> {
                   ),
                   SizedBox(height: 10,),
                   DropdownButton<String>(
-                    value: selectedBadges.isEmpty? null : selectedBadges.last,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        if (selectedBadges.contains(newValue))
-                          selectedBadges.remove(newValue);
-                        else
-                          selectedBadges.add(newValue);
-                      });
-                    },
+                    value: selectedBadges.isEmpty ? null : selectedBadges.last,
                     items: values.map<DropdownMenuItem<String>>((String value) {
                       return new DropdownMenuItem<String>(
                         value: value,
@@ -95,10 +89,20 @@ class _CreateNew extends State<CreateNew> {
                               Icons.check,
                               color: selectedBadges.contains(value) ? null : Colors.transparent,
                             ),
+                            Text(value),
                           ],
                         ),
                       );
                     }).toList(),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        if (selectedBadges.contains(newValue))
+                          selectedBadges.remove(newValue);
+                        else
+                          selectedBadges.add(newValue);
+                      });
+                    },
+
                     hint: Text(
                       "Please select applicable badges:",
                       style: TextStyle(color: Colors.white, fontSize: 12),
