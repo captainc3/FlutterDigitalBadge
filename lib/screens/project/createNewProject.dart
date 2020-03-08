@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:sample_flutter_app/models/user.dart';
+import 'package:sample_flutter_app/models/models.dart';
 
 class CreateNew extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _CreateNew extends State<CreateNew> {
   String projectName = '';
   String description = '';
   String badges = '';
-  final List<String> selectedValues = <String>[];
+  final List<String> selectedBadges = <String>[];
   final List<String> values = <String>['One', 'Two', 'Free', 'Four'];
 
   Widget build(BuildContext context) {
@@ -67,7 +67,8 @@ class _CreateNew extends State<CreateNew> {
                         labelText: 'Brief description about your project:',
                         labelStyle: TextStyle(color: Colors.white, fontSize: 12),
                       ),
-                      maxLines: 6,
+                      minLines: 1,
+                      maxLines: 5,
                       style: new TextStyle(color: Colors.white, fontSize: 12),
                       onChanged: (val) {
                         description = val;
@@ -75,13 +76,13 @@ class _CreateNew extends State<CreateNew> {
                   ),
                   SizedBox(height: 10,),
                   DropdownButton<String>(
-                    value: selectedValues.isEmpty? null : selectedValues.last,
+                    value: selectedBadges.isEmpty? null : selectedBadges.last,
                     onChanged: (String newValue) {
                       setState(() {
-                        if (selectedValues.contains(newValue))
-                          selectedValues.remove(newValue);
+                        if (selectedBadges.contains(newValue))
+                          selectedBadges.remove(newValue);
                         else
-                          selectedValues.add(newValue);
+                          selectedBadges.add(newValue);
                       });
                     },
                     items: values.map<DropdownMenuItem<String>>((String value) {
@@ -92,7 +93,7 @@ class _CreateNew extends State<CreateNew> {
                           children: <Widget>[
                             Icon(
                               Icons.check,
-                              color: selectedValues.contains(value) ? null : Colors.transparent,
+                              color: selectedBadges.contains(value) ? null : Colors.transparent,
                             ),
                           ],
                         ),
@@ -110,7 +111,7 @@ class _CreateNew extends State<CreateNew> {
                       style: TextStyle(fontSize: 12),
                     ),
                     onPressed: () async {
-                      setProjectData(Provider.of<User>(context).uid, projectName, description, selectedValues);
+                      setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges);
                       Navigator.of(context).pop();
                     },
                   ),
