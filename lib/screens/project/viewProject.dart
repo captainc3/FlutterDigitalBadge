@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
 
 class ViewProject extends StatefulWidget {
-  final Project value;
+  final Project projValues;
 
-  ViewProject({Key key, this.value}) : super (key: key);
+  ViewProject({Key key, this.projValues}) : super (key: key);
 
   @override
   _ViewProject createState() => _ViewProject();
@@ -20,19 +20,22 @@ class _ViewProject extends State<ViewProject> {
   String projectName = '';
   String description = '';
   String badges = '';
+  String updates = '';
   final List<String> selectedBadges = <String>[];
   final List<String> values = <String>['One', 'Two', 'Free', 'Four'];
 
   Widget build(BuildContext context) {
+
     Future setProjectData(String uid, String name, String description,
-        List<String> badges) async {
+        List<String> badges, String updates) async {
       return await Firestore.instance.collection('projects')
-          .document(name)
+          .document(name + ' - ' +  uid)
           .setData({
         'uid': uid,
         'name': name,
         'description': description,
         'badges': badges,
+        'updates' : updates,
       });
     }
 
@@ -42,7 +45,7 @@ class _ViewProject extends State<ViewProject> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0.0,
-        title: Text(widget.value.name),
+        title: Text(widget.projValues.name),
       ),
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -56,7 +59,10 @@ class _ViewProject extends State<ViewProject> {
                           borderSide: BorderSide(
                               color: Colors.white, width: 2.0),
                         ),
-                        labelText: widget.value.name,
+                        labelText: "Name:",
+                        hintText: widget.projValues.name,
+                        hintStyle: TextStyle(
+                            color: Colors.white, fontSize: 12),
                         labelStyle: TextStyle(
                             color: Colors.white, fontSize: 12),
                       ),
@@ -73,7 +79,10 @@ class _ViewProject extends State<ViewProject> {
                           borderSide: BorderSide(
                               color: Colors.white, width: 2.0),
                         ),
-                        labelText: widget.value.description,
+                        labelText: "Description:",
+                        hintText: widget.projValues.description,
+                        hintStyle: TextStyle(
+                            color: Colors.white, fontSize: 12),
                         labelStyle: TextStyle(
                             color: Colors.white, fontSize: 12),
                       ),
@@ -82,6 +91,27 @@ class _ViewProject extends State<ViewProject> {
                       style: new TextStyle(color: Colors.white, fontSize: 12),
                       onChanged: (val) {
                         description = val;
+                      }
+                  ),
+                  SizedBox(height: 10,),
+                  TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.white, width: 2.0),
+                        ),
+                        labelText: "Updates:",
+                        hintText: widget.projValues.updates,
+                        hintStyle: TextStyle(
+                            color: Colors.white, fontSize: 12),
+                        labelStyle: TextStyle(
+                            color: Colors.white, fontSize: 12),
+                      ),
+                      minLines: 1,
+                      maxLines: 5,
+                      style: new TextStyle(color: Colors.white, fontSize: 12),
+                      onChanged: (val) {
+                        updates = val;
                       }
                   ),
                   SizedBox(height: 10,),
@@ -125,7 +155,7 @@ class _ViewProject extends State<ViewProject> {
                     onPressed: () async {
                       setProjectData(Provider
                           .of<User>(context)
-                          .uid, projectName, description, selectedBadges);
+                          .uid, projectName, description, selectedBadges, updates);
                       Navigator.of(context).pop();
                     },
                   ),
