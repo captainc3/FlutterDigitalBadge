@@ -155,7 +155,7 @@ class _ViewProject extends State<ViewProject> {
                     onPressed: () async {
                       setProjectData(Provider
                           .of<User>(context)
-                          .uid, projectName, description, selectedBadges, updates);
+                          .uid, widget.projValues.name, description, selectedBadges, updates);
                       Navigator.of(context).pop();
                     },
                   ),
