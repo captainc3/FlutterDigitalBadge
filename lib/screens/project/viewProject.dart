@@ -5,6 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
 
 class ViewProject extends StatefulWidget {
+  final String projName;
+
+  ViewProject({Key key, this.projName}) : super (key: key);
+
   @override
   _ViewProject createState() => _ViewProject();
 }
@@ -38,7 +42,7 @@ class _ViewProject extends State<ViewProject> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0.0,
-        title: Text('Create New Project'),
+        title: Text(widget.projName),
       ),
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),

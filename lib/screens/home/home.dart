@@ -49,21 +49,13 @@ class _Home extends State<Home> {
             Navigator.of(context)
                 .push(
                 MaterialPageRoute(
-                    builder: (context) => ViewProject()
+                    builder: (context) => ViewProject(projName: doc["name"] + " - " + doc["uid"]),
                 )
             );
           },
           subtitle: new Text(doc["description"], style: TextStyle(fontSize: 12, color: Colors.white))),
         ))
         .toList();
-  }
-
-  Widget _buildProjListItem(BuildContext context, DocumentSnapshot document) {
-    return ListTile(
-        title: Text(document['name'] ?? 'default', style: TextStyle(fontSize: 12, color: Colors.white),),
-        subtitle: Text(document['desription'] ?? 'default', style: TextStyle(fontSize: 12, color: Colors.white),),
-        trailing: Text(document['uid'] ?? 'default', style: TextStyle(fontSize: 12, color: Colors.white),)
-    );
   }
 
   Widget menu(context) {
