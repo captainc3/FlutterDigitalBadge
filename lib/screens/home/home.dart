@@ -39,7 +39,6 @@ class _Home extends State<Home> {
   }
 
   getProjects(AsyncSnapshot<QuerySnapshot> snapshot) {
-//    if(Provider.of<User>(context).uid == snapshot.data['uid'])
     return snapshot.data.documents
         .map((doc) => new ListTile(title: new Text(doc["name"], style: TextStyle(fontSize: 12, color: Colors.white),),
         subtitle: new Text(doc["description"], style: TextStyle(fontSize: 12, color: Colors.white))))
@@ -151,18 +150,12 @@ class _Home extends State<Home> {
                 Text("Your Projects", style: TextStyle(fontSize: 16, color: Colors.white),),
                 SizedBox(height: 20,),
                 StreamBuilder(
-                  stream: Firestore.instance.collection('projects').snapshots(),
+                  stream: Firestore.instance.collection('projects').where("uid", isEqualTo: Provider.of<User>(context).uid).snapshots(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (!snapshot.hasData) return new Text("There are no projects.");
                       return new ListView(
                           shrinkWrap: true,
                           children: getProjects(snapshot));
-//                      ListView.builder(
-//                      shrinkWrap: true,
-//                        itemExtent: 0.0,
-//                        itemCount: snapshot.data.documents.length,
-//                        itemBuilder: (context, index) =>
-//                            _buildProjListItem(context, snapshot.data.documents[index]),);
                   }),
               ],
             ),
