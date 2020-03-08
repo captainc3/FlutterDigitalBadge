@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
 
 class ViewProject extends StatefulWidget {
-  final String projName;
+  final Project value;
 
-  ViewProject({Key key, this.projName}) : super (key: key);
+  ViewProject({Key key, this.value}) : super (key: key);
 
   @override
   _ViewProject createState() => _ViewProject();
@@ -42,7 +42,7 @@ class _ViewProject extends State<ViewProject> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0.0,
-        title: Text(widget.projName),
+        title: Text(widget.value.name),
       ),
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -56,7 +56,7 @@ class _ViewProject extends State<ViewProject> {
                           borderSide: BorderSide(
                               color: Colors.white, width: 2.0),
                         ),
-                        labelText: 'Project\'s name:',
+                        labelText: widget.value.name,
                         labelStyle: TextStyle(
                             color: Colors.white, fontSize: 12),
                       ),
@@ -73,7 +73,7 @@ class _ViewProject extends State<ViewProject> {
                           borderSide: BorderSide(
                               color: Colors.white, width: 2.0),
                         ),
-                        labelText: 'Brief description about your project:',
+                        labelText: widget.value.description,
                         labelStyle: TextStyle(
                             color: Colors.white, fontSize: 12),
                       ),
@@ -117,10 +117,10 @@ class _ViewProject extends State<ViewProject> {
                     ),
                   ),
                   RaisedButton(
-                    color: Colors.black38,
+                    color: Colors.black26,
                     child: Text(
-                      'Edit',
-                      style: TextStyle(fontSize: 12),
+                      'Complete Edit',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () async {
                       setProjectData(Provider

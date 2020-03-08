@@ -49,7 +49,12 @@ class _Home extends State<Home> {
             Navigator.of(context)
                 .push(
                 MaterialPageRoute(
-                    builder: (context) => ViewProject(projName: doc["name"] + " - " + doc["uid"]),
+                    builder: (context) => ViewProject(value : Project(
+                      uid: doc["uid"],
+                      name: doc["name"],
+                      description: doc["description"]
+                        // NEED TO FIGURE OUT HOW TO MAKE THE BADGES IMPORTABLE FROM FIRESTORE
+                    )),
                 )
             );
           },

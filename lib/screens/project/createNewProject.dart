@@ -105,10 +105,10 @@ class _CreateNew extends State<CreateNew> {
                     ),
                   ),
                   RaisedButton(
-                    color: Colors.black38,
+                    color: Colors.black26,
                     child: Text(
                       'Complete Project Creation',
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () async {
                       setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges);
