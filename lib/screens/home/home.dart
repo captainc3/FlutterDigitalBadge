@@ -3,6 +3,10 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 import 'package:sample_flutter_app/screens/project/createNewProject.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:sample_flutter_app/models/models.dart';
+
 final Color backgroundColor = Color(0xFF4A4A58);
 
 class Home extends StatefulWidget {
@@ -31,6 +35,22 @@ class _Home extends State<Home> {
           dashboard(context),
         ],
       ),
+    );
+  }
+
+  getProjects(AsyncSnapshot<QuerySnapshot> snapshot) {
+//    if(Provider.of<User>(context).uid == snapshot.data['uid'])
+    return snapshot.data.documents
+        .map((doc) => new ListTile(title: new Text(doc["name"], style: TextStyle(fontSize: 12, color: Colors.white),),
+        subtitle: new Text(doc["description"], style: TextStyle(fontSize: 12, color: Colors.white))))
+        .toList();
+  }
+
+  Widget _buildProjListItem(BuildContext context, DocumentSnapshot document) {
+    return ListTile(
+        title: Text(document['name'] ?? 'default', style: TextStyle(fontSize: 12, color: Colors.white),),
+        subtitle: Text(document['desription'] ?? 'default', style: TextStyle(fontSize: 12, color: Colors.white),),
+        trailing: Text(document['uid'] ?? 'default', style: TextStyle(fontSize: 12, color: Colors.white),)
     );
   }
 
@@ -129,17 +149,21 @@ class _Home extends State<Home> {
                 ),
                 SizedBox(height: 20,),
                 Text("Your Projects", style: TextStyle(fontSize: 16, color: Colors.white),),
-                ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text("Home Park Community Cleanup", style: TextStyle(fontSize: 12, color: Colors.white),),
-                        subtitle: Text("State Street", style: TextStyle(fontSize: 12, color: Colors.white),),
-                        trailing: Text("scorrales3", style: TextStyle(fontSize: 12, color: Colors.white),)
-                      );
-                    }, separatorBuilder: (context, index) {
-                  return Divider(height: 16,);
-                }, itemCount: 1)
+                SizedBox(height: 20,),
+                StreamBuilder(
+                  stream: Firestore.instance.collection('projects').snapshots(),
+                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (!snapshot.hasData) return new Text("There are no projects.");
+                      return new ListView(
+                          shrinkWrap: true,
+                          children: getProjects(snapshot));
+//                      ListView.builder(
+//                      shrinkWrap: true,
+//                        itemExtent: 0.0,
+//                        itemCount: snapshot.data.documents.length,
+//                        itemBuilder: (context, index) =>
+//                            _buildProjListItem(context, snapshot.data.documents[index]),);
+                  }),
               ],
             ),
           ),
