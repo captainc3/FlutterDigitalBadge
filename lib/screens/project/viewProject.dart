@@ -21,6 +21,7 @@ class _ViewProject extends State<ViewProject> {
   String description = '';
   String badges = '';
   String updates = '';
+  var textController = TextEditingController();
   final List<String> selectedBadges = <String>[];
   final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
     'Appearance', 'Negotations', 'STEM', 'Law & Public Safety', 'Marketing', 'Human Services',
@@ -46,7 +47,8 @@ class _ViewProject extends State<ViewProject> {
       Firestore.instance.collection('projects')
           .document(name + ' - ' + uid)
           .get().then((datasnapshot) {
-            print(datasnapshot.data['uid'].toString());
+//            print(datasnapshot.data['uid'].toString());
+              description = datasnapshot.data['description'].toString();
       });
     }
 
@@ -65,6 +67,7 @@ class _ViewProject extends State<ViewProject> {
               child: Column(
                 children: <Widget>[
                   TextField(
+                      controller: textController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -81,6 +84,7 @@ class _ViewProject extends State<ViewProject> {
                       style: new TextStyle(color: Colors.white, fontSize: 12),
                       onChanged: (val) {
                         projectName = val;
+//                        textController.text = projectName.toString();
                       }
                   ),
                   SizedBox(height: 10,),
