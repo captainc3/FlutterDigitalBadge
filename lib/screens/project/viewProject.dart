@@ -34,11 +34,19 @@ class _ViewProject extends State<ViewProject> {
       return await Firestore.instance.collection('projects')
           .document(name + ' - ' +  uid)
           .setData({
-        'uid': uid,
-        'name': name,
-        'description': description,
-        'badges': badges,
-        'updates' : updates,
+            'uid': uid,
+            'name': name,
+            'description': description,
+            'badges': badges,
+            'updates' : updates,
+      });
+    }
+
+    void getProjectData(String uid, String name) async {
+      Firestore.instance.collection('projects')
+          .document(name + ' - ' + uid)
+          .get().then((datasnapshot) {
+            print(datasnapshot.data['uid'].toString());
       });
     }
 
