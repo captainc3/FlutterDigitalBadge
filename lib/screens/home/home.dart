@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 import 'package:sample_flutter_app/screens/project/createNewProject.dart';
+import 'package:sample_flutter_app/screens/project/allProjects.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
@@ -140,6 +141,14 @@ class _Home extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(
+                            MaterialPageRoute(
+                                builder: (context) => AllProjects()
+                            )
+                        );
+                      },
                       color: Colors.black38,
                       child: Text("Search All Projects", style: TextStyle(fontSize: 12, color: Colors.white),),
                     ),

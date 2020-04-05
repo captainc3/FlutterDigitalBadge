@@ -22,7 +22,7 @@ class _AllProjects extends State<AllProjects> {
         appBar: AppBar(
           backgroundColor: backgroundColor,
           elevation: 0.0,
-          title: Text('See All Projects'),
+          title: Text('Search All Projects'),
         ),
         body: ListView(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
