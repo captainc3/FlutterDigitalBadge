@@ -19,6 +19,20 @@ class _ProfilePage extends State<ProfilePage> {
   double screenWidth, screenHeight;
   Duration duration = const Duration(milliseconds: 500);
 
+  String name = '';
+  String bio = '';
+  String badges = '';
+
+  List<String> badgesList = <String>[];
+
+  Future setUserData(String uid, String name, String bio) async {
+    return await Firestore.instance.collection('users').document(name + ' - ' +  uid).setData({
+      'uid': uid,
+      'name': name,
+      'bio' : bio,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -103,11 +117,24 @@ class _ProfilePage extends State<ProfilePage> {
                     SizedBox(height: 20, width: 20,)
                   ],
                 ),
-                Container(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text("name", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
-                  ),
+//                Container(
+//                  child: Align(
+//                    alignment: Alignment.topLeft,
+//                    child: Text("name", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
+//                  ),
+//                ),
+                TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2.0),
+                    ),
+                    labelText: 'Name: ',
+                    labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    style: new TextStyle(color: Colors.white, fontSize: 12),
+                    onChanged: (val) {
+                      name = val;
+                    }
                 ),
                 SizedBox(height: 20, width: 20,),
                 Container(
@@ -117,16 +144,18 @@ class _ProfilePage extends State<ProfilePage> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                Container(
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    border: Border.all(
-                      color: Colors.white30,
-                      width: 1,
+                TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+                      ),
+                      labelText: 'Bio: ',
+                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  child: Text("This is my bio. I'm trying to collect as many digital badges as possible.", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                    style: new TextStyle(color: Colors.white, fontSize: 12),
+                    onChanged: (val) {
+                      bio = val;
+                    }
                 ),
                 SizedBox(height: 20,),
                 Container(
@@ -145,7 +174,19 @@ class _ProfilePage extends State<ProfilePage> {
                     ),
                     borderRadius: BorderRadius.circular(2),
                   ),
-                  child: Text("none, loser", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                  child: Text("display user badges", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                ),
+                SizedBox(height: 100, ),
+                RaisedButton(
+                  color: Colors.black26,
+                  child: Text(
+                    'Finish editing',
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+//                  onPressed: () async {
+//                    setUserData(Provider.of<User>(context).uid, name, bio);
+//                    Navigator.of(context).pop();
+//                  },
                 ),
               ],
             ),
