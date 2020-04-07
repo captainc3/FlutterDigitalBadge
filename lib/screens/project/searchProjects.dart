@@ -33,8 +33,9 @@ class _SearchProjects extends State<SearchProjects> {
     List<Post> posts = [];
     for (int i = 0; i < documentList.length; i++) {
       String pName = documentList[i].data.values.toList()[2];
+      String pDes = documentList[i].data.values.toList()[3];
       if (pName.toUpperCase().contains(search.toUpperCase())) {
-          posts.add(Post(pName, "body random number :"));
+          posts.add(Post("Project Name: " + pName, "Project Desription: " + pDes));
       }
     }
     return posts;
