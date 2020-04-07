@@ -1,8 +1,11 @@
 class User {
 
   final String uid;
+  final String name;
+  final String bio;
+  final String badges;
 
-  User({this.uid});
+  User({this.uid, this.name, this.bio, this.badges});
 
 }
 
