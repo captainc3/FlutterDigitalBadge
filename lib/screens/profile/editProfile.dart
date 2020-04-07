@@ -3,36 +3,20 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sample_flutter_app/screens/home/home.dart';
 import 'package:sample_flutter_app/services/auth.dart';
-import 'package:sample_flutter_app/screens/profile/editProfile.dart';
 
 final Color backgroundColor = Color(0xFF4A4A58);
 
-class Profile extends StatefulWidget {
+class EditProfile extends StatefulWidget {
   @override
-  _Profile createState() => _Profile();
+  _EditProfile createState() => _EditProfile();
 }
 
-class _Profile extends State<Profile> {
+class _EditProfile extends State<EditProfile> {
 
   final AuthService _auth = AuthService();
-
   bool isCollapsed = true;
   double screenWidth, screenHeight;
   Duration duration = const Duration(milliseconds: 500);
-
-  String name = '';
-  String bio = '';
-  String badges = '';
-
-  List<String> badgesList = <String>[];
-
-  Future setUserData(String uid, String name, String bio) async {
-    return await Firestore.instance.collection('users').document(name + ' - ' +  uid).setData({
-      'uid': uid,
-      'name': name,
-      'bio' : bio,
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,24 +102,11 @@ class _Profile extends State<Profile> {
                     SizedBox(height: 20, width: 20,)
                   ],
                 ),
-//                Container(
-//                  child: Align(
-//                    alignment: Alignment.topLeft,
-//                    child: Text("name", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
-//                  ),
-//                ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    labelText: 'Name: ',
-                    labelStyle: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    style: new TextStyle(color: Colors.white, fontSize: 12),
-                    onChanged: (val) {
-                      name = val;
-                    }
+                Container(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("name", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
+                  ),
                 ),
                 SizedBox(height: 20, width: 20,),
                 Container(
@@ -145,18 +116,16 @@ class _Profile extends State<Profile> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2.0),
-                      ),
-                      labelText: 'Bio: ',
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    border: Border.all(
+                      color: Colors.white30,
+                      width: 1,
                     ),
-                    style: new TextStyle(color: Colors.white, fontSize: 12),
-                    onChanged: (val) {
-                      bio = val;
-                    }
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: Text("This is my bio. I'm trying to collect as many digital badges as possible.", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
                 SizedBox(height: 20,),
                 Container(
@@ -175,21 +144,20 @@ class _Profile extends State<Profile> {
                     ),
                     borderRadius: BorderRadius.circular(2),
                   ),
-                  child: Text("display user badges", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                  child: Text("none, loser", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
-                SizedBox(height: 100, ),
                 RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(
-                        MaterialPageRoute(
-                            builder: (context) => EditProfile()
-                        )
-                    );
+                  onPressed: () async {
+                    //this is where you would place the code to update the values and push to firebase
+
+
+
+
+                    Navigator.of(context).pop();
                   },
                   color: Colors.black26,
                   child: Text(
-                    'Edit Info',
+                    'Submit Changes',
                     style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
 //                  onPressed: () async {

@@ -83,7 +83,7 @@ class _Home extends State<Home> {
               Navigator.of(context)
                   .push(
                   MaterialPageRoute(
-                      builder: (context) => ProfilePage()
+                      builder: (context) => Profile()
                   )
               );
             },),
