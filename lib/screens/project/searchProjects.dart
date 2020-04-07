@@ -17,6 +17,7 @@ class Post {
   Post(this.title, this.description);
 }
 
+
 class SearchProjects extends StatefulWidget {
   @override
   _SearchProjects createState() => _SearchProjects();
@@ -24,13 +25,19 @@ class SearchProjects extends StatefulWidget {
 
 class _SearchProjects extends State<SearchProjects> {
   Future<List<Post>> search(String search) async {
+    List<DocumentSnapshot> documentList = (await Firestore.instance
+        .collection("projects")
+        .getDocuments()).
+    documents;
     await Future.delayed(Duration(seconds: 2));
-    return List.generate(search.length, (int index) {
-      return Post(
-        "Title : $search $index",
-        "Description :$search $index",
-      );
-    });
+    List<Post> posts = [];
+    for (int i = 0; i < documentList.length; i++) {
+      String pName = documentList[i].data.values.toList()[2];
+      if (pName.toUpperCase().contains(search.toUpperCase())) {
+          posts.add(Post(pName, "body random number :"));
+      }
+    }
+    return posts;
   }
 
   @override
@@ -40,6 +47,8 @@ class _SearchProjects extends State<SearchProjects> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SearchBar<Post>(
+            minimumChars: 1,
+            hintText: "Project Name",
             onSearch: search,
             onItemFound: (Post post, int index) {
               return ListTile(
