@@ -169,7 +169,8 @@ class _Home extends State<Home> {
                 SizedBox(height: 20,),
                 Text("Your Projects", style: TextStyle(fontSize: 16, color: Colors.white),),
                 StreamBuilder(
-                  stream: Firestore.instance.collection('projects').where("uid", isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                  stream: Firestore.instance.collection('projects').where("uid",
+                      isEqualTo: Provider.of<User>(context).uid).snapshots(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (!snapshot.hasData) return new Text("There are no projects.");
                       return new ListView(
