@@ -18,6 +18,20 @@ class _EditProfile extends State<EditProfile> {
   double screenWidth, screenHeight;
   Duration duration = const Duration(milliseconds: 500);
 
+  String userName = '';
+  String userBio = '';
+  String userBadges = '';
+
+  List<String> badgesList = <String>[];
+
+  Future setUserData(String uid, String name, String bio) async {
+    return await Firestore.instance.collection('profile').document(name + ' - ' +  uid).setData({
+      'uid': uid,
+      'name': name,
+      'bio' : bio,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -102,11 +116,18 @@ class _EditProfile extends State<EditProfile> {
                     SizedBox(height: 20, width: 20,)
                   ],
                 ),
-                Container(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text("name", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
-                  ),
+                TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+                      ),
+                      labelText: 'Name: ',
+                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    style: new TextStyle(color: Colors.white, fontSize: 12),
+                    onChanged: (val) {
+                      userName = val;
+                    }
                 ),
                 SizedBox(height: 20, width: 20,),
                 Container(
@@ -116,16 +137,18 @@ class _EditProfile extends State<EditProfile> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                Container(
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    border: Border.all(
-                      color: Colors.white30,
-                      width: 1,
+                TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+                      ),
+                      labelText: 'Bio: ',
+                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  child: Text("This is my bio. I'm trying to collect as many digital badges as possible.", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                    style: new TextStyle(color: Colors.white, fontSize: 12),
+                    onChanged: (val) {
+                      userBio = val;
+                    }
                 ),
                 SizedBox(height: 20,),
                 Container(
@@ -144,15 +167,11 @@ class _EditProfile extends State<EditProfile> {
                     ),
                     borderRadius: BorderRadius.circular(2),
                   ),
-                  child: Text("none, loser", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                  child: Text("display user badges", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    //this is where you would place the code to update the values and push to firebase
-
-
-
-
+//                    setUserData(Provider.of<User>(context).uid, userName, userBio);
                     Navigator.of(context).pop();
                   },
                   color: Colors.black26,
@@ -160,10 +179,6 @@ class _EditProfile extends State<EditProfile> {
                     'Submit Changes',
                     style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
-//                  onPressed: () async {
-//                    setUserData(Provider.of<User>(context).uid, name, bio);
-//                    Navigator.of(context).pop();
-//                  },
                 ),
               ],
             ),
