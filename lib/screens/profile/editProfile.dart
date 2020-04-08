@@ -25,11 +25,12 @@ class _EditProfile extends State<EditProfile> {
 
   List<String> badgesList = <String>[];
 
-  Future setUserData(String uid, String name, String bio) async {
+  Future setUserData(String uid, String name, String bio, String badges) async {
     return await Firestore.instance.collection('profile').document(uid).setData({
       'uid': uid,
       'name': name,
       'bio' : bio,
+      'badges' : badges,
     });
   }
 
@@ -40,46 +41,18 @@ class _EditProfile extends State<EditProfile> {
     screenWidth = size.width;
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0.0,
+        title: Text('Profile Page'),
+      ),
       body: Stack(
         children: <Widget>[
-          menu(context),
+          dashboard(context),
           dashboard(context),
         ],
-      ),
-    );
-  }
-
-  Widget menu(context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 32,),
-            RaisedButton(
-              color: Colors.black38,
-              child: Text("Home", style: TextStyle(color: Colors.white, fontSize: 15),),
-              onPressed: () {
-                Navigator.of(context)
-                    .pop();
-              },),
-
-            SizedBox(height: 16,),
-            RaisedButton(
-              color: Colors.black38,
-              child: Text("Logout", style: TextStyle(color: Colors.white, fontSize: 15),),
-              onPressed: () async{
-                await _auth.signOut();
-//                Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()),);
-              },),
-            SizedBox(height: 0,),
-          ],
-        ),
       ),
     );
   }
@@ -101,22 +74,6 @@ class _EditProfile extends State<EditProfile> {
             padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
             child: Column(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    InkWell(
-                      child: Icon(
-                        Icons.menu, color: Colors.white,
-                      ),
-                      onTap: () {
-                        setState(() {
-                          isCollapsed = !isCollapsed;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 20, width: 20,)
-                  ],
-                ),
                 TextField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -171,17 +128,36 @@ class _EditProfile extends State<EditProfile> {
                   child: Text("display user badges", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
                 SizedBox(height: 100),
-                RaisedButton(
-                  onPressed: () async {
-                    setUserData(Provider.of<User>(context).uid, userName, userBio);
-                    Navigator.of(context).pop();
+                StreamBuilder(
+                  stream: Firestore.instance.collection("profile").where("uid",
+                      isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+//                  stream: Firestore.instance.collection("profile").where("uid",
+//                      arrayContains: Provider.of<User>(context).uid).snapshots(),
+//                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                  {
+                    if (!snapshot.hasData || snapshot.data?.documents == null) {
+                      return new Text("TESTING");
+                    } else if (snapshot.data.documents.length > 0) {
+                      userBadges = snapshot.data.documents[0].data['badges'];
+                      print(userBadges);
+
+                      return new RaisedButton(
+                        onPressed: () async {
+                          setUserData(Provider.of<User>(context).uid, userName, userBio, userBadges);
+                          Navigator.of(context).pop();
+                        },
+                        color: Colors.black26,
+                        child: Text(
+                          'Submit Changes',
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      );
+                    }
+                    return new Text("");
                   },
-                  color: Colors.black26,
-                  child: Text(
-                    'Submit Changes',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
                 ),
+
               ],
             ),
           ),
