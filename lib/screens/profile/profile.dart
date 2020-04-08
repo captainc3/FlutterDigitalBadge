@@ -63,24 +63,20 @@ class _Profile extends State<Profile> {
             padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
             child: Column(
               children: <Widget>[
+                SizedBox(height: 20.0),
                 StreamBuilder(
                   stream: Firestore.instance.collection("profile").where("uid",
                       isEqualTo: Provider.of<User>(context).uid).snapshots(),
                   builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
-//                  stream: Firestore.instance.collection("profile").where("uid",
-//                      arrayContains: Provider.of<User>(context).uid).snapshots(),
-//                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
                   {
                       if (!snapshot.hasData || snapshot.data?.documents == null) {
                         return new Text("TESTING");
                       } else if (snapshot.data.documents.length > 0) {
                         name = snapshot.data.documents[0].data['name'];
-                        bio = snapshot.data.documents[0].data['bio'];
-                        badges = snapshot.data.documents[0].data['badges'];
-                        print(name + "i'm here");
+                        print(name);
 
-                        return new Text("Hi, " + name, style:
-                        TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),);
+                        return new Text("Hi, " + name + "!", style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),);
                     }
                     return new Text("");
                   },
@@ -92,12 +88,22 @@ class _Profile extends State<Profile> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                Container(
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  child: Text(bio, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                StreamBuilder(
+                  stream: Firestore.instance.collection("profile").where("uid",
+                      isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                  {
+                    if (!snapshot.hasData || snapshot.data?.documents == null) {
+                      return new Text("TESTING");
+                    } else if (snapshot.data.documents.length > 0) {
+                      bio = snapshot.data.documents[0].data['bio'];
+                      print(bio);
+
+                      return new Text(bio, style:
+                      TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),);
+                    }
+                    return new Text("");
+                  },
                 ),
                 SizedBox(height: 20,),
                 Container(
@@ -107,12 +113,22 @@ class _Profile extends State<Profile> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                Container(
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  child: Text(badges, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                StreamBuilder(
+                  stream: Firestore.instance.collection("profile").where("uid",
+                      isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                  {
+                    if (!snapshot.hasData || snapshot.data?.documents == null) {
+                      return new Text("TESTING");
+                    } else if (snapshot.data.documents.length > 0) {
+                      badges = snapshot.data.documents[0].data['badges'];
+                      print(badges);
+
+                      return new Text(badges, style:
+                      TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),);
+                    }
+                    return new Text("");
+                  },
                 ),
                 SizedBox(height: 100, ),
                 RaisedButton(
@@ -129,10 +145,6 @@ class _Profile extends State<Profile> {
                     'Edit Info',
                     style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
-//                  onPressed: () async {
-//                    setUserData(Provider.of<User>(context).uid, name, bio);
-//                    Navigator.of(context).pop();
-//                  },
                 ),
               ],
             ),

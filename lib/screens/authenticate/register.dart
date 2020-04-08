@@ -20,6 +20,7 @@ class _RegisterState extends State<Register> {
   // text field state
   String email = '';
   String password = '';
+  String name = '';
   String error = '';
 
   @override
@@ -44,7 +45,7 @@ class _RegisterState extends State<Register> {
           ]
       ),
       body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
           child: Form(
             key: _formKey,
               child: Column(
@@ -52,14 +53,31 @@ class _RegisterState extends State<Register> {
                   Image(image: AssetImage('assets/skills.png'),),
                   SizedBox(height: 20.0),
                   TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Name',
+                      ),
+                      validator: (val) => val.isEmpty ? 'Please enter a valid name' : null,
+                      style: new TextStyle(color: Colors.white),
+                      onChanged: (val) {
+                        setState(() => name = val);
+                      }
+                  ),
+                  SizedBox(height: 10.0),
+                  TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Email',
+                      ),
                     validator: (val) => val.isEmpty ? 'Enter an email' : null,
                       style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
                         setState(() => email = val);
                       }
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 10.0),
                   TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Password',
+                      ),
                       obscureText: true,
                       validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                       style: new TextStyle(color: Colors.white),
@@ -77,7 +95,7 @@ class _RegisterState extends State<Register> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         dynamic result = await _auth
-                            .registerWithEmailAndPassword(email, password);
+                            .registerWithEmailAndPassword(email, password, name);
                         if (result == null) {
                           setState(() => error = 'Please use valid email');
                         }
