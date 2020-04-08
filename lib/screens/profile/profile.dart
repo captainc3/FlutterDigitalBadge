@@ -63,6 +63,7 @@ class _Profile extends State<Profile> {
             padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
             child: Column(
               children: <Widget>[
+                SizedBox(height: 20.0),
                 StreamBuilder(
                   stream: Firestore.instance.collection("profile").where("uid",
                       isEqualTo: Provider.of<User>(context).uid).snapshots(),
