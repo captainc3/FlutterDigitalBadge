@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sample_flutter_app/screens/home/home.dart';
 import 'package:sample_flutter_app/services/auth.dart';
+import 'package:sample_flutter_app/models/models.dart';
 
 final Color backgroundColor = Color(0xFF4A4A58);
 
@@ -25,7 +26,7 @@ class _EditProfile extends State<EditProfile> {
   List<String> badgesList = <String>[];
 
   Future setUserData(String uid, String name, String bio) async {
-    return await Firestore.instance.collection('profile').document(name + ' - ' +  uid).setData({
+    return await Firestore.instance.collection('profile').document(uid).setData({
       'uid': uid,
       'name': name,
       'bio' : bio,
@@ -172,7 +173,7 @@ class _EditProfile extends State<EditProfile> {
                 SizedBox(height: 100),
                 RaisedButton(
                   onPressed: () async {
-//                    setUserData(Provider.of<User>(context).uid, userName, userBio);
+                    setUserData(Provider.of<User>(context).uid, userName, userBio);
                     Navigator.of(context).pop();
                   },
                   color: Colors.black26,
