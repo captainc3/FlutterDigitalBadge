@@ -70,7 +70,7 @@ class _SearchProjects extends State<SearchProjects> {
                   child: Text("Sort Alphabetically"),
                   onPressed: () {
                     _searchBarController.sortList((Post a, Post b) {
-                      return a.title.compareTo(b.title);
+                      return b.title.compareTo(a.title);
                     });
                   },
                 ),
