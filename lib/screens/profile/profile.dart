@@ -3,35 +3,26 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sample_flutter_app/screens/home/home.dart';
 import 'package:sample_flutter_app/services/auth.dart';
+import 'package:sample_flutter_app/screens/profile/editProfile.dart';
+import 'package:sample_flutter_app/models/models.dart';
 
 final Color backgroundColor = Color(0xFF4A4A58);
 
-class ProfilePage extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  _ProfilePage createState() => _ProfilePage();
+  _Profile createState() => _Profile();
 }
 
-class _ProfilePage extends State<ProfilePage> {
+class _Profile extends State<Profile> {
 
   final AuthService _auth = AuthService();
+  String bio = "";
+  String name = "";
+  String badges = "";
 
   bool isCollapsed = true;
   double screenWidth, screenHeight;
   Duration duration = const Duration(milliseconds: 500);
-
-  String name = '';
-  String bio = '';
-  String badges = '';
-
-  List<String> badgesList = <String>[];
-
-  Future setUserData(String uid, String name, String bio) async {
-    return await Firestore.instance.collection('users').document(name + ' - ' +  uid).setData({
-      'uid': uid,
-      'name': name,
-      'bio' : bio,
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,46 +31,17 @@ class _ProfilePage extends State<ProfilePage> {
     screenWidth = size.width;
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0.0,
+        title: Text('Profile Page'),
+      ),
       body: Stack(
         children: <Widget>[
-          menu(context),
           dashboard(context),
         ],
-      ),
-    );
-  }
-
-  Widget menu(context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 32,),
-            RaisedButton(
-              color: Colors.black38,
-              child: Text("Home", style: TextStyle(color: Colors.white, fontSize: 15),),
-              onPressed: () {
-                Navigator.of(context)
-                    .pop();
-              },),
-
-            SizedBox(height: 16,),
-            RaisedButton(
-              color: Colors.black38,
-              child: Text("Logout", style: TextStyle(color: Colors.white, fontSize: 15),),
-              onPressed: () async{
-                await _auth.signOut();
-//                Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()),);
-              },),
-            SizedBox(height: 0,),
-          ],
-        ),
       ),
     );
   }
@@ -98,45 +60,31 @@ class _ProfilePage extends State<ProfilePage> {
           scrollDirection: Axis.vertical,
           physics: ClampingScrollPhysics(),
           child: Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
             child: Column(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    InkWell(
-                      child: Icon(
-                        Icons.menu, color: Colors.white,
-                      ),
-                      onTap: () {
-                        setState(() {
-                          isCollapsed = !isCollapsed;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 20, width: 20,)
-                  ],
-                ),
-//                Container(
-//                  child: Align(
-//                    alignment: Alignment.topLeft,
-//                    child: Text("name", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
-//                  ),
-//                ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    labelText: 'Name: ',
-                    labelStyle: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    style: new TextStyle(color: Colors.white, fontSize: 12),
-                    onChanged: (val) {
-                      name = val;
+                StreamBuilder(
+                  stream: Firestore.instance.collection("profile").where("uid",
+                      isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+//                  stream: Firestore.instance.collection("profile").where("uid",
+//                      arrayContains: Provider.of<User>(context).uid).snapshots(),
+//                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                  {
+                      if (!snapshot.hasData || snapshot.data?.documents == null) {
+                        return new Text("TESTING");
+                      } else if (snapshot.data.documents.length > 0) {
+                        name = snapshot.data.documents[0].data['name'];
+                        bio = snapshot.data.documents[0].data['bio'];
+                        badges = snapshot.data.documents[0].data['badges'];
+                        print(name + "i'm here");
+
+                        return new Text("Hi, " + name, style:
+                        TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),);
                     }
+                    return new Text("");
+                  },
                 ),
-                SizedBox(height: 20, width: 20,),
                 Container(
                   child: Align(
                     alignment: Alignment.topLeft,
@@ -144,18 +92,12 @@ class _ProfilePage extends State<ProfilePage> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2.0),
-                      ),
-                      labelText: 'Bio: ',
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    style: new TextStyle(color: Colors.white, fontSize: 12),
-                    onChanged: (val) {
-                      bio = val;
-                    }
+                Container(
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: Text(bio, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
                 SizedBox(height: 20,),
                 Container(
@@ -168,19 +110,23 @@ class _ProfilePage extends State<ProfilePage> {
                 Container(
                   decoration: BoxDecoration(
                     color: backgroundColor,
-                    border: Border.all(
-                      color: Colors.white30,
-                      width: 1,
-                    ),
                     borderRadius: BorderRadius.circular(2),
                   ),
-                  child: Text("display user badges", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                  child: Text(badges, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
                 SizedBox(height: 100, ),
                 RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(
+                        MaterialPageRoute(
+                            builder: (context) => EditProfile()
+                        )
+                    );
+                  },
                   color: Colors.black26,
                   child: Text(
-                    'Finish editing',
+                    'Edit Info',
                     style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
 //                  onPressed: () async {
