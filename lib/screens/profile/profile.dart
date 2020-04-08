@@ -67,9 +67,6 @@ class _Profile extends State<Profile> {
                   stream: Firestore.instance.collection("profile").where("uid",
                       isEqualTo: Provider.of<User>(context).uid).snapshots(),
                   builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
-//                  stream: Firestore.instance.collection("profile").where("uid",
-//                      arrayContains: Provider.of<User>(context).uid).snapshots(),
-//                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
                   {
                       if (!snapshot.hasData || snapshot.data?.documents == null) {
                         return new Text("TESTING");
@@ -94,9 +91,6 @@ class _Profile extends State<Profile> {
                   stream: Firestore.instance.collection("profile").where("uid",
                       isEqualTo: Provider.of<User>(context).uid).snapshots(),
                   builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
-//                  stream: Firestore.instance.collection("profile").where("uid",
-//                      arrayContains: Provider.of<User>(context).uid).snapshots(),
-//                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
                   {
                     if (!snapshot.hasData || snapshot.data?.documents == null) {
                       return new Text("TESTING");
@@ -122,9 +116,6 @@ class _Profile extends State<Profile> {
                   stream: Firestore.instance.collection("profile").where("uid",
                       isEqualTo: Provider.of<User>(context).uid).snapshots(),
                   builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
-//                  stream: Firestore.instance.collection("profile").where("uid",
-//                      arrayContains: Provider.of<User>(context).uid).snapshots(),
-//                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
                   {
                     if (!snapshot.hasData || snapshot.data?.documents == null) {
                       return new Text("TESTING");

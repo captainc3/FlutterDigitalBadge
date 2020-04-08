@@ -116,25 +116,28 @@ class _EditProfile extends State<EditProfile> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                Container(
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    border: Border.all(
-                      color: Colors.white30,
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  child: Text("display user badges", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                StreamBuilder(
+                  stream: Firestore.instance.collection("profile").where("uid",
+                      isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                  {
+                    if (!snapshot.hasData || snapshot.data?.documents == null) {
+                      return new Text("TESTING");
+                    } else if (snapshot.data.documents.length > 0) {
+                      userBadges = snapshot.data.documents[0].data['badges'];
+                      print(userBadges);
+
+                      return new Text(userBadges, style:
+                      TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),);
+                    }
+                    return new Text("");
+                  },
                 ),
                 SizedBox(height: 100),
                 StreamBuilder(
                   stream: Firestore.instance.collection("profile").where("uid",
                       isEqualTo: Provider.of<User>(context).uid).snapshots(),
                   builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
-//                  stream: Firestore.instance.collection("profile").where("uid",
-//                      arrayContains: Provider.of<User>(context).uid).snapshots(),
-//                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
                   {
                     if (!snapshot.hasData || snapshot.data?.documents == null) {
                       return new Text("TESTING");

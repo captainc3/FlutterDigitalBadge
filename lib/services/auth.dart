@@ -44,14 +44,14 @@ Future signInAnon() async {
   }
 
   //register with email & password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password, String name) async {
     try {
       AuthResult result = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
 
       // create a new document for the user with uid
-      await DatabaseService(uid: user.uid).setUserData('name', user.uid, 'Working on my badges.', 'none');
+      await DatabaseService(uid: user.uid).setUserData(name, user.uid, 'Please update your bio.', 'none');
       return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());

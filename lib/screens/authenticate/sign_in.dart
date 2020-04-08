@@ -52,6 +52,9 @@ class _SignInState extends State<SignIn> {
               Image(image: AssetImage('assets/skills.png'),),
               SizedBox(height: 20.0),
               TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: 'Email',
+                  ),
                   validator: (val) => val.isEmpty ? 'Enter an email' : null,
                   style: new TextStyle(color: Colors.white),
                 onChanged: (val) {
@@ -60,6 +63,9 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 20.0),
               TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: 'Password',
+                  ),
                   validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                   style: new TextStyle(color: Colors.white),
                 obscureText: true,
