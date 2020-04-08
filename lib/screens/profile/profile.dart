@@ -112,7 +112,7 @@ class _Profile extends State<Profile> {
                     color: backgroundColor,
                     borderRadius: BorderRadius.circular(2),
                   ),
-                  child: Text(badges, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+//                  child: Text(badges, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
                 SizedBox(height: 100, ),
                 RaisedButton(
