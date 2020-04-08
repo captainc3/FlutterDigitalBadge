@@ -25,6 +25,7 @@ class SearchProjects extends StatefulWidget {
 }
 
 class _SearchProjects extends State<SearchProjects> {
+  final SearchBarController<Post> _searchBarController = SearchBarController();
   Future<List<Post>> search(String search) async {
     List<DocumentSnapshot> documentList = (await Firestore.instance
         .collection("projects")
@@ -40,7 +41,7 @@ class _SearchProjects extends State<SearchProjects> {
       String pUpd = documentList[i].data['updates'];
 
       if (pName.toUpperCase().contains(search.toUpperCase())) {
-          posts.add(Post("Project Name: " + pName, "Project Desription: " + pDes, pUid, pUpd));
+          posts.add(Post(pName, "Project Desription: " + pDes, pUid, pUpd));
       }
     }
     return posts;
@@ -58,9 +59,35 @@ class _SearchProjects extends State<SearchProjects> {
             hintText: "Project Name",
             iconActiveColor: Colors.red,
             onSearch: search,
+            searchBarController: _searchBarController,
             textStyle: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
+            ),
+            header: Row(
+              children: <Widget>[
+                RaisedButton(
+                  child: Text("Sort Alphabetically"),
+                  onPressed: () {
+                    _searchBarController.sortList((Post a, Post b) {
+                      return a.title.compareTo(b.title);
+                    });
+                  },
+                ),
+                RaisedButton(
+                  child: Text("Unsort"),
+                  onPressed: () {
+                    _searchBarController.removeSort();
+                  },
+                ),
+                RaisedButton(
+                  child: Text("Replay Search"),
+                  onPressed: () {
+                    //isReplay = !isReplay;
+                    _searchBarController.replayLastSearch();
+                  },
+                ),
+              ],
             ),
             onItemFound: (Post post, int index) {
               return ListTile(
