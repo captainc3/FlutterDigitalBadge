@@ -169,6 +169,7 @@ class _EditProfile extends State<EditProfile> {
                   ),
                   child: Text("display user badges", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
+                SizedBox(height: 100),
                 RaisedButton(
                   onPressed: () async {
 //                    setUserData(Provider.of<User>(context).uid, userName, userBio);
