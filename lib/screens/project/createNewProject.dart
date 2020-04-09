@@ -23,12 +23,13 @@ class _CreateNew extends State<CreateNew> {
     'Architecture & Construction', 'Agriculture, Food, & Resources'];
   Widget build(BuildContext context) {
 
-    Future setProjectData(String uid, String name, String description, List<String> badges) async {
+    Future setProjectData(String uid, String name, String description, List<String> badges, String email) async {
       return await Firestore.instance.collection('projects').document(name + ' - ' +  uid).setData({
         'uid': uid,
         'name': name,
         'description' : description,
         'badges': badges,
+        'email': email,
       });
     }
 
@@ -115,7 +116,7 @@ class _CreateNew extends State<CreateNew> {
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () async {
-                      setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges);
+                      setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges, Provider.of<User>(context).email);
                       Navigator.of(context).pop();
                     },
                   ),

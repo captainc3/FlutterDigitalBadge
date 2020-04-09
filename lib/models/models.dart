@@ -4,8 +4,9 @@ class User {
   final String name;
   final String bio;
   final String badges;
+  final String email;
 
-  User({this.uid, this.name, this.bio, this.badges});
+  User({this.uid, this.name, this.bio, this.badges, this.email});
 
 }
 
@@ -16,6 +17,7 @@ class Project {
   final String description;
   final List<String> badges;
   final String updates;
+  final String email;
 
-  Project({this.uid, this.name, this.description, this.badges, this.updates});
+  Project({this.uid, this.name, this.description, this.badges, this.updates, this.email});
 }

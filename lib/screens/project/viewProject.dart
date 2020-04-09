@@ -31,7 +31,7 @@ class _ViewProject extends State<ViewProject> {
   Widget build(BuildContext context) {
 
     Future setProjectData(String uid, String name, String description,
-        List<String> badges, String updates) async {
+        List<String> badges, String updates, String email) async {
       return await Firestore.instance.collection('projects')
           .document(name + ' - ' +  uid)
           .setData({
@@ -40,6 +40,7 @@ class _ViewProject extends State<ViewProject> {
             'description': description,
             'badges': badges,
             'updates' : updates,
+            'email' : email,
       });
     }
 
@@ -171,7 +172,9 @@ class _ViewProject extends State<ViewProject> {
                     onPressed: () async {
                       setProjectData(Provider
                           .of<User>(context)
-                          .uid, widget.projValues.name, description, selectedBadges, updates);
+                          .uid, widget.projValues.name, description, selectedBadges, updates, Provider
+                          .of<User>(context)
+                          .email);
                       Navigator.of(context).pop();
                     },
                   ),

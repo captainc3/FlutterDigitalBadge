@@ -54,6 +54,7 @@ class _SignInState extends State<SignIn> {
               TextFormField(
                   decoration: const InputDecoration(
                     hintText: 'Email',
+                    hintStyle: TextStyle(color: Colors.white),
                   ),
                   validator: (val) => val.isEmpty ? 'Enter an email' : null,
                   style: new TextStyle(color: Colors.white),
@@ -65,6 +66,7 @@ class _SignInState extends State<SignIn> {
               TextFormField(
                   decoration: const InputDecoration(
                     hintText: 'Password',
+                    hintStyle: TextStyle(color: Colors.white),
                   ),
                   validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                   style: new TextStyle(color: Colors.white),
