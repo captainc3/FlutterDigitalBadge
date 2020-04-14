@@ -7,7 +7,7 @@ import 'package:sample_flutter_app/screens/project/createNewProject.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
-import 'package:sample_flutter_app/screens/project/viewProject.dart';
+import 'package:sample_flutter_app/screens/project/searchViewProject.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 
 class Post {
@@ -94,7 +94,7 @@ class _SearchProjects extends State<SearchProjects> {
                 title: Text(post.title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 subtitle: Text(post.description, style: TextStyle(color: Colors.white)),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewProject(projValues : Project(
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchViewProject(projValues : Project(
                       uid: post.uid,
                       name: post.title,
                       description: post.description,

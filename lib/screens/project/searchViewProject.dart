@@ -3,18 +3,17 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
-import 'package:sample_flutter_app/screens/project/editProject.dart';
 
-class ViewProject extends StatefulWidget {
+class SearchViewProject extends StatefulWidget {
   final Project projValues;
 
-  ViewProject({Key key, this.projValues}) : super (key: key);
+  SearchViewProject({Key key, this.projValues}) : super (key: key);
 
   @override
-  _ViewProject createState() => _ViewProject();
+  _SearchViewProject createState() => _SearchViewProject();
 }
 
-class _ViewProject extends State<ViewProject> {
+class _SearchViewProject extends State<SearchViewProject> {
   final _formKey = GlobalKey<FormState>();
 
 // text field state
@@ -51,28 +50,7 @@ class _ViewProject extends State<ViewProject> {
                   SizedBox(height: 10,),
                   Text("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
                   Text(widget.projValues.updates, style: TextStyle(color: Colors.white),),
-                  SizedBox(height: 10,),
-                  RaisedButton(
-                    color: Colors.black38,
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(
-                          MaterialPageRoute(
-                            builder: (context) => EditProject(projValues : Project(
-                                uid: Provider.of<User>(context).uid,
-                                name: widget.projValues.name,
-                                description: widget.projValues.description,
-                                updates: widget.projValues.updates
-                            )
-                            )
-                          )
-                      );
-                    },
-                    child: Text(
-                      'Edit Info',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ),
+                  SizedBox(height: 10,)
                 ],
               )
           )
