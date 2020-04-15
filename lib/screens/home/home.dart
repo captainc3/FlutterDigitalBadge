@@ -55,7 +55,7 @@ class _Home extends State<Home> {
                       name: doc["name"],
                       description: doc["description"],
                         updates: doc["updates"]
-
+                        // NEED TO FIGURE OUT HOW TO MAKE THE BADGES IMPORTABLE FROM FIRESTORE
                     )),
                 )
             );
