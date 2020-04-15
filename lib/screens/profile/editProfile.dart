@@ -25,12 +25,13 @@ class _EditProfile extends State<EditProfile> {
 
   List<String> badgesList = <String>[];
 
-  Future setUserData(String uid, String name, String bio, String badges) async {
+  Future setUserData(String uid, String name, String bio, String badges, String email) async {
     return await Firestore.instance.collection('profile').document(uid).setData({
       'uid': uid,
       'name': name,
       'bio' : bio,
       'badges' : badges,
+      'email' : email,
     });
   }
 
@@ -147,7 +148,7 @@ class _EditProfile extends State<EditProfile> {
 
                       return new RaisedButton(
                         onPressed: () async {
-                          setUserData(Provider.of<User>(context).uid, userName, userBio, userBadges);
+                          setUserData(Provider.of<User>(context).uid, userName, userBio, userBadges, Provider.of<User>(context).email);
                           Navigator.of(context).pop();
                         },
                         color: Colors.black26,

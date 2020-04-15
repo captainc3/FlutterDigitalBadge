@@ -9,7 +9,7 @@ class AuthService {
 
   // create user obj based on FirebaseUser
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+    return user != null ? User(uid: user.uid, email: user.email) : null;
   }
 
   // auth change user stream
@@ -51,7 +51,7 @@ Future signInAnon() async {
       FirebaseUser user = result.user;
 
       // create a new document for the user with uid
-      await DatabaseService(uid: user.uid).setUserData(name, user.uid, 'Please update your bio.', 'none');
+      await DatabaseService(uid: user.uid, email: user.email).setUserData(name, user.uid, 'Please update your bio.', 'none', user.email);
       return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());

@@ -55,6 +55,7 @@ class _RegisterState extends State<Register> {
                   TextFormField(
                       decoration: const InputDecoration(
                         hintText: 'Name',
+                        hintStyle: TextStyle(color: Colors.white),
                       ),
                       validator: (val) => val.isEmpty ? 'Please enter a valid name' : null,
                       style: new TextStyle(color: Colors.white),
@@ -66,6 +67,7 @@ class _RegisterState extends State<Register> {
                   TextFormField(
                       decoration: const InputDecoration(
                         hintText: 'Email',
+                        hintStyle: TextStyle(color: Colors.white),
                       ),
                     validator: (val) => val.isEmpty ? 'Enter an email' : null,
                       style: new TextStyle(color: Colors.white),
@@ -77,6 +79,7 @@ class _RegisterState extends State<Register> {
                   TextFormField(
                       decoration: const InputDecoration(
                         hintText: 'Password',
+                        hintStyle: TextStyle(color: Colors.white),
                       ),
                       obscureText: true,
                       validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,

@@ -3,7 +3,6 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
-import 'package:intl/intl.dart';
 
 class CreateNew extends StatefulWidget {
   @override
@@ -14,7 +13,6 @@ class _CreateNew extends State<CreateNew> {
   final _formKey = GlobalKey<FormState>();
 
 // text field state
-  var time = new DateTime.now();
   String projectName = '';
   String description = '';
   String badges = '';
@@ -25,15 +23,13 @@ class _CreateNew extends State<CreateNew> {
     'Architecture & Construction', 'Agriculture, Food, & Resources'];
   Widget build(BuildContext context) {
 
-    Future setProjectData(String uid, String name, String description, List<String> badges, String updates) async {
+    Future setProjectData(String uid, String name, String description, List<String> badges) async {
       return await Firestore.instance.collection('projects').document(name + ' - ' +  uid).setData({
         'uid': uid,
         'name': name,
         'description' : description,
         'badges': badges,
-        'updates': updates,
       });
-
     }
 
     return Scaffold(
@@ -119,7 +115,7 @@ class _CreateNew extends State<CreateNew> {
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () async {
-                      setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges, "Created " + DateFormat("MM-dd-yyyy").format(time));
+                      setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges);
                       Navigator.of(context).pop();
                     },
                   ),
