@@ -3,18 +3,17 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
-import 'package:sample_flutter_app/screens/project/editProj.dart';
 
-class ViewProject extends StatefulWidget {
+class SearchViewProject extends StatefulWidget {
   final Project projValues;
 
-  ViewProject({Key key, this.projValues}) : super (key: key);
+  SearchViewProject({Key key, this.projValues}) : super (key: key);
 
   @override
-  _ViewProject createState() => _ViewProject();
+  _SearchViewProject createState() => _SearchViewProject();
 }
 
-class _ViewProject extends State<ViewProject> {
+class _SearchViewProject extends State<SearchViewProject> {
   final _formKey = GlobalKey<FormState>();
 
 // text field state
@@ -22,7 +21,6 @@ class _ViewProject extends State<ViewProject> {
   String description = '';
   String badges = '';
   String updates = '';
-  var textController = TextEditingController();
   final List<String> selectedBadges = <String>[];
   final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
     'Appearance', 'Negotations', 'STEM', 'Law & Public Safety', 'Marketing', 'Human Services',
@@ -44,8 +42,7 @@ class _ViewProject extends State<ViewProject> {
           child: Form(
               key: _formKey,
               child: Column(
-                children: <Widget>[
-                  Text("Name:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
+                children: <Widget>[Text("Name:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
                   Text(widget.projValues.name, style: TextStyle(color: Colors.white),),
                   SizedBox(height: 10,),
                   Text("Description:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
@@ -53,29 +50,6 @@ class _ViewProject extends State<ViewProject> {
                   SizedBox(height: 10,),
                   Text("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
                   Text(widget.projValues.updates, style: TextStyle(color: Colors.white),),
-                  SizedBox(height: 10,),
-                  RaisedButton(
-                    color: Colors.black26,
-                    child: Text(
-                      'Edit Project',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(
-                          MaterialPageRoute(
-                            builder: (context) => EditProj(projValues : Project(
-                                uid: Provider.of<User>(context).uid,
-                                name: widget.projValues.name,
-                                description: widget.projValues.description,
-                                updates: widget.projValues.updates,
-                                badges: widget.projValues.badges
-                              // NEED TO FIGURE OUT HOW TO MAKE THE BADGES IMPORTABLE FROM FIRESTORE
-                            )),
-                          )
-                      );
-                    },
-                  ),
                   SizedBox(height: 10,)
                 ],
               )

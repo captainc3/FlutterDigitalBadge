@@ -23,6 +23,7 @@ class _Home extends State<Home> {
   bool isCollapsed = true;
   double screenWidth, screenHeight;
   Duration duration = const Duration(milliseconds: 500);
+  String badges = "";
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class _Home extends State<Home> {
                       uid: doc["uid"],
                       name: doc["name"],
                       description: doc["description"],
-                        updates: doc["updates"]
+                        updates: doc["updates"],
                         // NEED TO FIGURE OUT HOW TO MAKE THE BADGES IMPORTABLE FROM FIRESTORE
                     )),
                 )
