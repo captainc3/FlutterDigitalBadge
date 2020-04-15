@@ -12,13 +12,12 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'dart:math';
 
 class Post {
-  final int h;
   final String title;
   final String description;
   final String uid;
   final String updates;
 
-  Post(this.h, this.title, this.description, this.uid, this.updates);
+  Post(this.title, this.description, this.uid, this.updates);
 }
 
 class SearchProjects extends StatefulWidget {
@@ -42,11 +41,9 @@ class _SearchProjects extends State<SearchProjects> {
       String pUid = documentList[i].data['uid'];
       String pUpd = documentList[i].data['updates'];
 
-      var random = new Random();
-      int a = random.nextInt(100);
 
       if (pName.toUpperCase().contains(search.toUpperCase())) {
-          posts.add(Post(a,pName + " " + a.toString(), "Project Desription: " + pDes, pUid, pUpd));
+          posts.add(Post(pName, pDes, pUid, pUpd));
       }
     }
     return posts;
