@@ -2,7 +2,7 @@
 
 This is a community service and entrepreneurial android application. This is usually run on a Nexus 6 emulator inside Android 3.6.2.
 
-## Getting Started
+**_Release Notes_**
 
 This project is a starting point for a Flutter application.
 
