@@ -18,8 +18,8 @@ This is a community service and entrepreneurial android application. This is usu
 ## Install Guide
 
 ##### Pre-Requesites
-- [Install guide for Flutter on Windows, macOS and Linux](https://flutter.dev/docs/get-started/install)
-- [Install guide for Android Studio](https://developer.android.com/studio)
+- [Install guide for Flutter on Windows, macOS and Linux.](https://flutter.dev/docs/get-started/install)
+- [Install guide for Android Studio.](https://developer.android.com/studio)
 ##### Dependencies
 - Dependencies are outlined in the install guide.
 ##### Build
