@@ -1,6 +1,6 @@
-# sample_flutter_app
+# flutter_digital_badge
 
-A new Flutter application.
+This is a community service and entrepreneurial android application. This is usually run on a Nexus 6 emulator inside Android 3.6.2.
 
 ## Getting Started
 
