@@ -2,15 +2,29 @@
 
 This is a community service and entrepreneurial android application. This is usually run on a Nexus 6 emulator inside Android 3.6.2.
 
-**_Release Notes_**
+## Release Notes
 
-This project is a starting point for a Flutter application.
+##### Software Features
+- Create and edit projects
+- Search projects
+- Edit profile
 
-A few resources to get you started if this is your first Flutter project:
+##### Bug Fixes
+- None
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+##### Known Bugs
+- Search button does not alphabetically sort projects on the search project page.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Install Guide
+
+##### Pre-Requesites
+- [Install guide for Flutter on Windows, macOS and Linux](https://flutter.dev/docs/get-started/install)
+- [Install guide for Android Studio](https://developer.android.com/studio)
+##### Dependencies
+- Dependencies are outlined in the install guide.
+##### Build
+- Can build with Android Studio. The Flutter install guide goes into more detail about running applications within other IDEs.
+##### Install
+- Everything necessary for install has been outlined in the pre-requisites.
+##### Running Application
+- The instructions for running the application are in the installation guide for Flutter.
