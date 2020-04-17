@@ -3,6 +3,8 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
+import 'package:intl/intl.dart';
+import 'package:sample_flutter_app/services/auth.dart';
 
 class EditProj extends StatefulWidget {
   final Project projValues;
@@ -19,8 +21,10 @@ class _EditProj extends State<EditProj> {
 // text field state
   String projectName = '';
   String description = '';
-  String badges = '';
   String updates = '';
+  String error = '';
+
+  var now = new DateTime.now();
   var textController = TextEditingController();
   final List<String> selectedBadges = <String>[];
   final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
@@ -30,8 +34,7 @@ class _EditProj extends State<EditProj> {
 
   Widget build(BuildContext context) {
 
-    Future setProjectData(String uid, String name, String description,
-        List<String> badges, String updates) async {
+    Future setProjectData(String uid, String name, String description, List<dynamic> badges, String updates) async {
       return await Firestore.instance.collection('projects')
           .document(name + ' - ' +  uid)
           .setData({
@@ -49,7 +52,7 @@ class _EditProj extends State<EditProj> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0.0,
-        title: Text(widget.projValues.name),
+        title: Text("Edit Project: " + widget.projValues.name),
       ),
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -57,101 +60,31 @@ class _EditProj extends State<EditProj> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white, width: 2.0),
-                        ),
-                        labelText: "Name",
-                        hintText: widget.projValues.name,
-                        hintStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                        labelStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
+                  Text("Please fill out all fields!", style: TextStyle(color: Colors.redAccent, fontSize: 15.0)),
+                  TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'New Project Description',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
-                      maxLines: 1,
-                      style: new TextStyle(color: Colors.white, fontSize: 12),
+                      validator: (val) => val.isEmpty ? 'Please enter a valid name' : null,
+                      style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
-                        projectName = val;
-//                        textController.text = projectName.toString();
+                        setState(() => description = val);
                       }
                   ),
-                  SizedBox(height: 10,),
-                  TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white, width: 2.0),
-                        ),
-                        labelText: "Description:",
-                        hintText: widget.projValues.description,
-                        hintStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                        labelStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
+                  SizedBox(height: 20),
+                  TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Project update (Date is automatically added)',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
-                      minLines: 1,
-                      maxLines: 5,
-                      style: new TextStyle(color: Colors.white, fontSize: 12),
+                      validator: (val) => val.isEmpty ? 'Please enter an update' : null,
+                      style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
-                        description = val;
+                        setState(() => updates = DateFormat("MM-dd-yyyy").format(now) + ": " + val);
                       }
                   ),
-                  SizedBox(height: 10,),
-                  TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white, width: 2.0),
-                        ),
-                        labelText: "Project History:",
-                        hintText: widget.projValues.updates,
-                        hintStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                        labelStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                      ),
-                      minLines: 1,
-                      maxLines: 5,
-                      style: new TextStyle(color: Colors.white, fontSize: 12),
-                      onChanged: (val) {
-                        updates = val;
-                      }
-                  ),
-                  SizedBox(height: 10,),
-                  DropdownButton<String>(
-                    value: selectedBadges.isEmpty ? null : selectedBadges.last,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        if (selectedBadges.contains(newValue))
-                          selectedBadges.remove(newValue);
-                        else
-                          selectedBadges.add(newValue);
-                      });
-                    },
-                    items: values.map<DropdownMenuItem<String>>((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              Icons.check,
-                              color: selectedBadges.contains(value)
-                                  ? null
-                                  : Colors.transparent,
-                            ),
-                            Text(value),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    hint: Text(
-                      "Please select applicable badges:",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ),
+                  SizedBox(height: 20,),
                   RaisedButton(
                     color: Colors.black26,
                     child: Text(
@@ -159,10 +92,12 @@ class _EditProj extends State<EditProj> {
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () async {
-                      setProjectData(Provider
-                          .of<User>(context)
-                          .uid, widget.projValues.name, description, selectedBadges, updates);
-                      Navigator.of(context).pop();
+                      if (_formKey.currentState.validate()) {
+                        setProjectData(Provider
+                            .of<User>(context)
+                            .uid, widget.projValues.name, description, widget.projValues.badges, updates);
+                        Navigator.of(context).pop();
+                      } else setState(() => error = 'Please fill out all fields');
                     },
                   ),
                   SizedBox(height: 10,)

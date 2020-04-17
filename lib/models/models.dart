@@ -15,7 +15,7 @@ class Project {
   final String uid;
   final String name;
   final String description;
-  final List<String> badges;
+  final List<dynamic> badges;
   final String updates;
   final String email;
 

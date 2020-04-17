@@ -116,9 +116,10 @@ class _CreateNew extends State<CreateNew> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
+                        selectedBadges.insert(0, "Unapproved Project");
                         setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges, "Created " + DateFormat("MM-dd-yyyy").format(now));
                         Navigator.of(context).pop();
-                      } else setState(() => error = 'Please use valid email');
+                      } else setState(() => error = 'Please fill out all fields');
                     },
                   ),
                   SizedBox(height: 10,)

@@ -20,7 +20,8 @@ class _ViewProject extends State<ViewProject> {
 // text field state
   String projectName = '';
   String description = '';
-  String badges = '';
+  List<dynamic> badgesList = [];
+  var bList;
   String updates = '';
   var textController = TextEditingController();
   final List<String> selectedBadges = <String>[];
@@ -40,20 +41,59 @@ class _ViewProject extends State<ViewProject> {
         title: Text(widget.projValues.name),
       ),
       body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        alignment: Alignment.center,
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
           child: Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  Text("Name:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
-                  Text(widget.projValues.name, style: TextStyle(color: Colors.white),),
-                  SizedBox(height: 10,),
-                  Text("Description:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
-                  Text(widget.projValues.description, style: TextStyle(color: Colors.white),),
-                  SizedBox(height: 10,),
+                  Text("Name:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  Text(widget.projValues.name, style: TextStyle(color: Colors.white)),
+                  SizedBox(height: 10),
+                  Text("Description:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  Text(widget.projValues.description, style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center),
+                  SizedBox(height: 10),
                   Text("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
-                  Text(widget.projValues.updates, style: TextStyle(color: Colors.white),),
-                  SizedBox(height: 10,),
+                  Text(widget.projValues.updates, style: TextStyle(color: Colors.white)),
+                  SizedBox(height: 10),
+                  Text("Badges:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  SizedBox(height: 10),
+                  StreamBuilder(
+                    //this is poor coding practice, but i could not get the listviewbuilder to work with the
+                    //properly formatted badgeslist and blist without using a streambuilder
+                    //the streambuilder itself here is not used
+                    stream: Firestore.instance.collection("projects").where("uid",
+                        isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                    builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                    {
+                       badgesList = widget.projValues.badges;
+                       bList = List<String>.from(badgesList);
+
+                        return new Flexible(child: new ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: badgesList.length,
+                            itemBuilder: (context, idx) {
+                              if (idx == 0) {
+                                if (bList[idx] == 'Unapproved Project') {
+                                  return Text(bList[idx], style: TextStyle(color: Colors.red,
+                                      decoration: TextDecoration.underline),
+                                    textAlign: TextAlign.center);
+                                }
+                                return Text(bList[idx], style: TextStyle(color: Colors.green,
+                                    decoration: TextDecoration.underline),
+                                  textAlign: TextAlign.center);
+                              } else {
+                                return Text(bList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                                textAlign: TextAlign.center);
+                                }
+                              return Text(bList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                              textAlign: TextAlign.center,);
+                            }));
+
+                      return new Text("");
+                    },
+                  ),
                   RaisedButton(
                     color: Colors.black26,
                     child: Text(
@@ -61,6 +101,7 @@ class _ViewProject extends State<ViewProject> {
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () {
+                      Navigator.of(context).pop();
                       Navigator.of(context)
                           .push(
                           MaterialPageRoute(
@@ -69,8 +110,7 @@ class _ViewProject extends State<ViewProject> {
                                 name: widget.projValues.name,
                                 description: widget.projValues.description,
                                 updates: widget.projValues.updates,
-                                badges: widget.projValues.badges
-                              // NEED TO FIGURE OUT HOW TO MAKE THE BADGES IMPORTABLE FROM FIRESTORE
+                                badges: widget.projValues.badges,
                             )),
                           )
                       );

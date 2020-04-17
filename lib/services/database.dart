@@ -18,7 +18,7 @@ class DatabaseService {
     });
   }
 
-  Future setProjectData(String name, String description, String badges, String updates) async {
+  Future setProjectData(String name, String description, List<dynamic> badges, String updates) async {
     return await Firestore.instance.collection('projects').document(name).setData({
       'name': name,
       'description' : description,

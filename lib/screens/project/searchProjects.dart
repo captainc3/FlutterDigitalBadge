@@ -7,7 +7,7 @@ import 'package:sample_flutter_app/screens/project/createNewProject.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
-import 'package:sample_flutter_app/screens/project/viewProject.dart';
+import 'package:sample_flutter_app/screens/project/searchviewProject.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'dart:math';
 
@@ -16,8 +16,9 @@ class Post {
   final String description;
   final String uid;
   final String updates;
+  final List<dynamic> badges;
 
-  Post(this.title, this.description, this.uid, this.updates);
+  Post(this.title, this.description, this.uid, this.updates, this.badges);
 }
 
 class SearchProjects extends StatefulWidget {
@@ -40,10 +41,11 @@ class _SearchProjects extends State<SearchProjects> {
       String pDes = documentList[i].data['description'];
       String pUid = documentList[i].data['uid'];
       String pUpd = documentList[i].data['updates'];
+      List<dynamic> pBad = documentList[i].data['badges'];
 
 
       if (pName.toUpperCase().contains(search.toUpperCase())) {
-          posts.add(Post(pName, pDes, pUid, pUpd));
+          posts.add(Post(pName, pDes, pUid, pUpd, pBad));
       }
     }
     return posts;
@@ -98,11 +100,12 @@ class _SearchProjects extends State<SearchProjects> {
                 title: Text(post.title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 subtitle: Text(post.description, style: TextStyle(color: Colors.white)),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewProject(projValues : Project(
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchViewProject(projValues : Project(
                       uid: post.uid,
                       name: post.title,
                       description: post.description,
-                      updates: post.updates
+                      updates: post.updates,
+                      badges: post.badges
                     // NEED TO FIGURE OUT HOW TO MAKE THE BADGES IMPORTABLE FROM FIRESTORE
                   ))));
                 },
