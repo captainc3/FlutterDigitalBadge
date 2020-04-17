@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
 import 'package:intl/intl.dart';
 import 'package:sample_flutter_app/services/auth.dart';
+import 'package:flutter/services.dart';
 
 class CreateNew extends StatefulWidget {
   @override
@@ -20,6 +21,8 @@ class _CreateNew extends State<CreateNew> {
   String description = '';
   String badges = '';
   String error = '';
+  List<dynamic> uList = [];
+
   var now = new DateTime.now();
 
   final List<String> selectedBadges = <String>[];
@@ -29,7 +32,7 @@ class _CreateNew extends State<CreateNew> {
     'Architecture & Construction', 'Agriculture, Food, & Resources'];
   Widget build(BuildContext context) {
 
-    Future setProjectData(String uid, String name, String description, List<String> badges, String updates) async {
+    Future setProjectData(String uid, String name, String description, List<String> badges, List<dynamic> updates) async {
       return await Firestore.instance.collection('projects').document(name + ' - ' +  uid).setData({
         'uid': uid,
         'name': name,
@@ -54,6 +57,9 @@ class _CreateNew extends State<CreateNew> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(33),
+                      ],
                       decoration: const InputDecoration(
                         hintText: 'Project Name',
                         hintStyle: TextStyle(color: Colors.white),
@@ -66,6 +72,9 @@ class _CreateNew extends State<CreateNew> {
                   ),
                   SizedBox(height: 10,),
                   TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(276),
+                      ],
                       decoration: const InputDecoration(
                         hintText: 'Project Description',
                         hintStyle: TextStyle(color: Colors.white),
@@ -117,7 +126,8 @@ class _CreateNew extends State<CreateNew> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         selectedBadges.insert(0, "Unapproved Project");
-                        setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges, "Created " + DateFormat("MM-dd-yyyy").format(now));
+                        setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges,
+                            uList.followedBy([DateFormat("MM-dd-yyyy").format(now) + ": Project created."]).toList());
                         Navigator.of(context).pop();
                       } else setState(() => error = 'Please fill out all fields');
                     },

@@ -19,8 +19,9 @@ class _SearchViewProject extends State<SearchViewProject> {
 // text field state
   String projectName = '';
   String description = '';
-  String badges = '';
-  String updates = '';
+
+  List<dynamic> updates = [];
+  var uList;
   List<dynamic> badgesList = [];
   var bList;
   final List<String> selectedBadges = <String>[];
@@ -54,7 +55,26 @@ class _SearchViewProject extends State<SearchViewProject> {
                       textAlign: TextAlign.center),
                   SizedBox(height: 10),
                   Text("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
-                  Text(widget.projValues.updates, style: TextStyle(color: Colors.white)),
+                  StreamBuilder(
+                    //this is poor coding practice, but i could not get the listviewbuilder to work with the
+                    //properly formatted badgeslist and blist without using a streambuilder
+                    //the streambuilder itself here is not used
+                    stream: Firestore.instance.collection("projects").where("uid",
+                        isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                    builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                    {
+                      updates = widget.projValues.updates;
+                      uList = List<String>.from(updates);
+
+                      return new Flexible(child: new ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: updates.length,
+                          itemBuilder: (context, idx) {
+                              return Text(uList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                                  textAlign: TextAlign.center);
+                          }));
+                    },
+                  ),
                   SizedBox(height: 10),
                   Text("Badges:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
                   SizedBox(height: 10),

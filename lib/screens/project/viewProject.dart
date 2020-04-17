@@ -20,9 +20,10 @@ class _ViewProject extends State<ViewProject> {
 // text field state
   String projectName = '';
   String description = '';
+  List<dynamic> updates = [];
+  var uList;
   List<dynamic> badgesList = [];
   var bList;
-  String updates = '';
   var textController = TextEditingController();
   final List<String> selectedBadges = <String>[];
   final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
@@ -55,7 +56,26 @@ class _ViewProject extends State<ViewProject> {
                       textAlign: TextAlign.center),
                   SizedBox(height: 10),
                   Text("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
-                  Text(widget.projValues.updates, style: TextStyle(color: Colors.white)),
+                  StreamBuilder(
+                    //this is poor coding practice, but i could not get the listviewbuilder to work with the
+                    //properly formatted badgeslist and blist without using a streambuilder
+                    //the streambuilder itself here is not used
+                    stream: Firestore.instance.collection("projects").where("uid",
+                        isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                    builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                    {
+                      updates = widget.projValues.updates;
+                      uList = List<String>.from(updates);
+
+                      return new Flexible(child: new ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: updates.length,
+                          itemBuilder: (context, idx) {
+                            return Text(uList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                                textAlign: TextAlign.center);
+                          }));
+                    },
+                  ),
                   SizedBox(height: 10),
                   Text("Badges:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
                   SizedBox(height: 10),

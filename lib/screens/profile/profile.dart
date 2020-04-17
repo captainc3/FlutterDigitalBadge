@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sample_flutter_app/screens/home/home.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 import 'package:sample_flutter_app/screens/profile/editProfile.dart';
 import 'package:sample_flutter_app/models/models.dart';

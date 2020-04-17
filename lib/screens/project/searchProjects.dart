@@ -1,21 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sample_flutter_app/screens/profile/profile.dart';
-import 'package:sample_flutter_app/services/auth.dart';
-import 'package:sample_flutter_app/screens/project/createNewProject.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
 import 'package:sample_flutter_app/screens/project/searchviewProject.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
-import 'dart:math';
+
 
 class Post {
   final String title;
   final String description;
   final String uid;
-  final String updates;
+  final List<dynamic> updates;
   final List<dynamic> badges;
 
   Post(this.title, this.description, this.uid, this.updates, this.badges);
@@ -40,7 +35,7 @@ class _SearchProjects extends State<SearchProjects> {
       String pName = documentList[i].data['name'];
       String pDes = documentList[i].data['description'];
       String pUid = documentList[i].data['uid'];
-      String pUpd = documentList[i].data['updates'];
+      List<dynamic> pUpd = documentList[i].data['updates'];
       List<dynamic> pBad = documentList[i].data['badges'];
 
 

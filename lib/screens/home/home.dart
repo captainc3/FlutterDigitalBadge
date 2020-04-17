@@ -4,7 +4,6 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 import 'package:sample_flutter_app/screens/project/createNewProject.dart';
 import 'package:sample_flutter_app/screens/project/searchProjects.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';

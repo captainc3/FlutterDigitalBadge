@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
 import 'package:intl/intl.dart';
-import 'package:sample_flutter_app/services/auth.dart';
+import 'package:flutter/services.dart';
 
 class EditProj extends StatefulWidget {
   final Project projValues;
@@ -21,8 +21,10 @@ class _EditProj extends State<EditProj> {
 // text field state
   String projectName = '';
   String description = '';
-  String updates = '';
+  String newUpdate = '';
   String error = '';
+  List<dynamic> uList = [];
+  List<dynamic> temp = [];
 
   var now = new DateTime.now();
   var textController = TextEditingController();
@@ -34,7 +36,9 @@ class _EditProj extends State<EditProj> {
 
   Widget build(BuildContext context) {
 
-    Future setProjectData(String uid, String name, String description, List<dynamic> badges, String updates) async {
+
+
+    Future setProjectData(String uid, String name, String description, List<dynamic> badges, List<dynamic> updates) async {
       return await Firestore.instance.collection('projects')
           .document(name + ' - ' +  uid)
           .setData({
@@ -47,6 +51,7 @@ class _EditProj extends State<EditProj> {
     }
 
     return Scaffold(
+
       resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -62,6 +67,9 @@ class _EditProj extends State<EditProj> {
                 children: <Widget>[
                   Text("Please fill out all fields!", style: TextStyle(color: Colors.redAccent, fontSize: 15.0)),
                   TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(276),
+                      ],
                       decoration: const InputDecoration(
                         hintText: 'New Project Description',
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
@@ -81,7 +89,8 @@ class _EditProj extends State<EditProj> {
                       validator: (val) => val.isEmpty ? 'Please enter an update' : null,
                       style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
-                        setState(() => updates = DateFormat("MM-dd-yyyy").format(now) + ": " + val);
+                        setState(() => newUpdate = DateFormat("MM-dd-yyyy").format(now) + ": " + val);
+
                       }
                   ),
                   SizedBox(height: 20,),
@@ -93,9 +102,12 @@ class _EditProj extends State<EditProj> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
+                        uList = widget.projValues.updates;
+                        print(uList.followedBy([newUpdate]).toList());
+                        //temp = new List(uList.length + 1);
                         setProjectData(Provider
                             .of<User>(context)
-                            .uid, widget.projValues.name, description, widget.projValues.badges, updates);
+                            .uid, widget.projValues.name, description, widget.projValues.badges, uList.followedBy([newUpdate]).toList());
                         Navigator.of(context).pop();
                       } else setState(() => error = 'Please fill out all fields');
                     },
