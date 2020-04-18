@@ -101,7 +101,6 @@ class _SearchProjects extends State<SearchProjects> {
                       description: post.description,
                       updates: post.updates,
                       badges: post.badges
-                    // NEED TO FIGURE OUT HOW TO MAKE THE BADGES IMPORTABLE FROM FIRESTORE
                   ))));
                 },
               );

@@ -58,7 +58,7 @@ class _ViewProject extends State<ViewProject> {
                   Text("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
                   StreamBuilder(
                     //this is poor coding practice, but i could not get the listviewbuilder to work with the
-                    //properly formatted badgeslist and blist without using a streambuilder
+                    //properly formatted ulist and updates without using a streambuilder
                     //the streambuilder itself here is not used
                     stream: Firestore.instance.collection("projects").where("uid",
                         isEqualTo: Provider.of<User>(context).uid).snapshots(),
