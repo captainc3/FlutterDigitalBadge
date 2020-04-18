@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sample_flutter_app/screens/home/home.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 import 'package:sample_flutter_app/models/models.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final Color backgroundColor = Color(0xFF4A4A58);
 
@@ -40,10 +41,27 @@ class _EditProfile extends State<EditProfile> {
 
   Future _getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    print('henlo');
 
-    setState(() {
-      _image = image;
-    });
+    if (this.mounted) {
+      setState(() {
+        _image = image;
+        print('Image Path $_image');
+      });
+    }
+  }
+
+  Future uploadImage(BuildContext context) async {
+    String fileName = basename(_image.path); // get the file name
+    StorageReference storageRef = FirebaseStorage.instance.ref().child(fileName); // get the reference
+    StorageUploadTask uploadTask = storageRef.putFile(_image); // put the file in firebase
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+
+    if (this.mounted) {
+      setState(() {
+        print('image uploaded');
+      });
+    }
   }
 
   @override
@@ -90,50 +108,29 @@ class _EditProfile extends State<EditProfile> {
                   padding: EdgeInsets.all(20),
                   child: Column(
                     children: <Widget>[
-                      Text('Pictures'),
+                      Text('Picture'),
                       Divider(),
                       GridView.count(
                         shrinkWrap: true,
                         primary: false,
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(30),
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
-                        crossAxisCount: 3,
+                        crossAxisCount: 1,
                         children: <Widget>[
                           GestureDetector(
-//                            onTap: () {
-//                              print('add image 1');
-//                            },
                             onTap: _getImage,
                             child: Container(
                               color: Colors.white70,
-                              child: Text('+'),
+                              child: _image == null ? Text('+') : Image.file(_image, fit: BoxFit.fill),
                             ),
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                print('add image 2');
-                              },
-                              child: Container(
-                                color: Colors.white70,
-                                child: Text('+'),
-                              ),
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                print('add image 3');
-                              },
-                              child: Container(
-                                color: Colors.white70,
-                                child: Text('+'),
-                              ),
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 20, width: 20,),
+//                SizedBox(height: 20, width: 20,),
                 TextField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -207,6 +204,7 @@ class _EditProfile extends State<EditProfile> {
 
                       return new RaisedButton(
                         onPressed: () async {
+                          uploadImage(context);
                           setUserData(Provider.of<User>(context).uid, userName, userBio, userBadges, Provider.of<User>(context).email);
                           Navigator.of(context).pop();
                         },
