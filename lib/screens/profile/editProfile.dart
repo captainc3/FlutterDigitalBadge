@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sample_flutter_app/screens/home/home.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 import 'package:sample_flutter_app/models/models.dart';
+import 'package:image_picker/image_picker.dart';
 
 final Color backgroundColor = Color(0xFF4A4A58);
 
@@ -13,6 +15,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfile extends State<EditProfile> {
+  File _image;
 
   final AuthService _auth = AuthService();
   bool isCollapsed = true;
@@ -32,6 +35,14 @@ class _EditProfile extends State<EditProfile> {
       'bio' : bio,
       'badges' : badges,
       'email' : email,
+    });
+  }
+
+  Future _getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
     });
   }
 
@@ -75,6 +86,54 @@ class _EditProfile extends State<EditProfile> {
             padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
             child: Column(
               children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: <Widget>[
+                      Text('Pictures'),
+                      Divider(),
+                      GridView.count(
+                        shrinkWrap: true,
+                        primary: false,
+                        padding: const EdgeInsets.all(20),
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        crossAxisCount: 3,
+                        children: <Widget>[
+                          GestureDetector(
+//                            onTap: () {
+//                              print('add image 1');
+//                            },
+                            onTap: _getImage,
+                            child: Container(
+                              color: Colors.white70,
+                              child: Text('+'),
+                            ),
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                print('add image 2');
+                              },
+                              child: Container(
+                                color: Colors.white70,
+                                child: Text('+'),
+                              ),
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                print('add image 3');
+                              },
+                              child: Container(
+                                color: Colors.white70,
+                                child: Text('+'),
+                              ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20, width: 20,),
                 TextField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
