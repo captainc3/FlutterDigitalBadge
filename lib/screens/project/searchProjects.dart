@@ -1,24 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sample_flutter_app/screens/profile/profile.dart';
-import 'package:sample_flutter_app/services/auth.dart';
-import 'package:sample_flutter_app/screens/project/createNewProject.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
-import 'package:sample_flutter_app/screens/project/searchViewProject.dart';
+import 'package:sample_flutter_app/screens/project/searchviewProject.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
-import 'dart:math';
+
 
 class Post {
-  final int h;
   final String title;
   final String description;
   final String uid;
-  final String updates;
+  final List<dynamic> updates;
+  final List<dynamic> badges;
 
-  Post(this.h, this.title, this.description, this.uid, this.updates);
+  Post(this.title, this.description, this.uid, this.updates, this.badges);
 }
 
 class SearchProjects extends StatefulWidget {
@@ -40,13 +35,12 @@ class _SearchProjects extends State<SearchProjects> {
       String pName = documentList[i].data['name'];
       String pDes = documentList[i].data['description'];
       String pUid = documentList[i].data['uid'];
-      String pUpd = documentList[i].data['updates'];
+      List<dynamic> pUpd = documentList[i].data['updates'];
+      List<dynamic> pBad = documentList[i].data['badges'];
 
-      var random = new Random();
-      int a = random.nextInt(100);
 
       if (pName.toUpperCase().contains(search.toUpperCase())) {
-          posts.add(Post(a,pName + " " + a.toString(), "Project Desription: " + pDes, pUid, pUpd));
+          posts.add(Post(pName, pDes, pUid, pUpd, pBad));
       }
     }
     return posts;
@@ -105,8 +99,8 @@ class _SearchProjects extends State<SearchProjects> {
                       uid: post.uid,
                       name: post.title,
                       description: post.description,
-                      updates: post.updates
-                    // NEED TO FIGURE OUT HOW TO MAKE THE BADGES IMPORTABLE FROM FIRESTORE
+                      updates: post.updates,
+                      badges: post.badges
                   ))));
                 },
               );
@@ -117,20 +111,3 @@ class _SearchProjects extends State<SearchProjects> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

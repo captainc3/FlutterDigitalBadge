@@ -15,8 +15,8 @@ class Project {
   final String uid;
   final String name;
   final String description;
-  final List<String> badges;
-  final String updates;
+  final List<dynamic> badges;
+  final List<dynamic> updates;
   final String email;
 
   Project({this.uid, this.name, this.description, this.badges, this.updates, this.email});

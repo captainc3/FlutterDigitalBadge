@@ -4,7 +4,6 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:sample_flutter_app/services/auth.dart';
 import 'package:sample_flutter_app/screens/project/createNewProject.dart';
 import 'package:sample_flutter_app/screens/project/searchProjects.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
@@ -23,6 +22,7 @@ class _Home extends State<Home> {
   bool isCollapsed = true;
   double screenWidth, screenHeight;
   Duration duration = const Duration(milliseconds: 500);
+  String badges = "";
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +54,13 @@ class _Home extends State<Home> {
                       uid: doc["uid"],
                       name: doc["name"],
                       description: doc["description"],
-                        updates: doc["updates"]
-
+                        updates: doc["updates"],
+                        badges: doc["badges"],
                     )),
                 )
             );
           },
-          subtitle: new Text(doc["description"], style: TextStyle(fontSize: 12, color: Colors.white))),
+            subtitle: new Text(doc["description"], style: TextStyle(fontSize: 12, color: Colors.white))),
         ))
         .toList();
   }

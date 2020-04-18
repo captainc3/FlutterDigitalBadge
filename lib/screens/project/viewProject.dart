@@ -3,6 +3,7 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
+import 'package:sample_flutter_app/screens/project/editProj.dart';
 
 class ViewProject extends StatefulWidget {
   final Project projValues;
@@ -19,8 +20,10 @@ class _ViewProject extends State<ViewProject> {
 // text field state
   String projectName = '';
   String description = '';
-  String badges = '';
-  String updates = '';
+  List<dynamic> updates = [];
+  var uList;
+  List<dynamic> badgesList = [];
+  var bList;
   var textController = TextEditingController();
   final List<String> selectedBadges = <String>[];
   final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
@@ -29,28 +32,6 @@ class _ViewProject extends State<ViewProject> {
     'Architecture & Construction', 'Agriculture, Food, & Resources'];
 
   Widget build(BuildContext context) {
-
-    Future setProjectData(String uid, String name, String description,
-        List<String> badges, String updates) async {
-      return await Firestore.instance.collection('projects')
-          .document(name + ' - ' +  uid)
-          .setData({
-            'uid': uid,
-            'name': name,
-            'description': description,
-            'badges': badges,
-            'updates' : updates,
-      });
-    }
-
-    void getProjectData(String uid, String name) async {
-      Firestore.instance.collection('projects')
-          .document(name + ' - ' + uid)
-          .get().then((datasnapshot) {
-//            print(datasnapshot.data['uid'].toString());
-              description = datasnapshot.data['description'].toString();
-      });
-    }
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -61,118 +42,98 @@ class _ViewProject extends State<ViewProject> {
         title: Text(widget.projValues.name),
       ),
       body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        alignment: Alignment.center,
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
           child: Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  TextField(
-                      controller: textController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white, width: 2.0),
-                        ),
-                        labelText: "Name:",
-                        hintText: widget.projValues.name,
-                        hintStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                        labelStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                      ),
-                      maxLines: 1,
-                      style: new TextStyle(color: Colors.white, fontSize: 12),
-                      onChanged: (val) {
-                        projectName = val;
-//                        textController.text = projectName.toString();
-                      }
-                  ),
-                  SizedBox(height: 10,),
-                  TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white, width: 2.0),
-                        ),
-                        labelText: "Description:",
-                        hintText: widget.projValues.description,
-                        hintStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                        labelStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                      ),
-                      minLines: 1,
-                      maxLines: 5,
-                      style: new TextStyle(color: Colors.white, fontSize: 12),
-                      onChanged: (val) {
-                        description = val;
-                      }
-                  ),
-                  SizedBox(height: 10,),
-                  TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white, width: 2.0),
-                        ),
-                        labelText: "Project History:",
-                        hintText: widget.projValues.updates,
-                        hintStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                        labelStyle: TextStyle(
-                            color: Colors.white, fontSize: 12),
-                      ),
-                      minLines: 1,
-                      maxLines: 5,
-                      style: new TextStyle(color: Colors.white, fontSize: 12),
-                      onChanged: (val) {
-                        updates = val;
-                      }
-                  ),
-                  SizedBox(height: 10,),
-                  DropdownButton<String>(
-                    value: selectedBadges.isEmpty ? null : selectedBadges.last,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        if (selectedBadges.contains(newValue))
-                          selectedBadges.remove(newValue);
-                        else
-                          selectedBadges.add(newValue);
-                      });
+                  Text("Name:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  Text(widget.projValues.name, style: TextStyle(color: Colors.white)),
+                  SizedBox(height: 10),
+                  Text("Description:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  Text(widget.projValues.description, style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center),
+                  SizedBox(height: 10),
+                  Text("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
+                  StreamBuilder(
+                    //this is poor coding practice, but i could not get the listviewbuilder to work with the
+                    //properly formatted ulist and updates without using a streambuilder
+                    //the streambuilder itself here is not used
+                    stream: Firestore.instance.collection("projects").where("uid",
+                        isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                    builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                    {
+                      updates = widget.projValues.updates;
+                      uList = List<String>.from(updates);
+
+                      return new Flexible(child: new ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: updates.length,
+                          itemBuilder: (context, idx) {
+                            return Text(uList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                                textAlign: TextAlign.center);
+                          }));
                     },
-                    items: values.map<DropdownMenuItem<String>>((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              Icons.check,
-                              color: selectedBadges.contains(value)
-                                  ? null
-                                  : Colors.transparent,
-                            ),
-                            Text(value),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    hint: Text(
-                      "Please select applicable badges:",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text("Badges:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  SizedBox(height: 10),
+                  StreamBuilder(
+                    //this is poor coding practice, but i could not get the listviewbuilder to work with the
+                    //properly formatted badgeslist and blist without using a streambuilder
+                    //the streambuilder itself here is not used
+                    stream: Firestore.instance.collection("projects").where("uid",
+                        isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                    builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                    {
+                       badgesList = widget.projValues.badges;
+                       bList = List<String>.from(badgesList);
+
+                        return new Flexible(child: new ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: badgesList.length,
+                            itemBuilder: (context, idx) {
+                              if (idx == 0) {
+                                if (bList[idx] == 'Unapproved Project') {
+                                  return Text(bList[idx], style: TextStyle(color: Colors.red,
+                                      decoration: TextDecoration.underline),
+                                    textAlign: TextAlign.center);
+                                }
+                                return Text(bList[idx], style: TextStyle(color: Colors.green,
+                                    decoration: TextDecoration.underline),
+                                  textAlign: TextAlign.center);
+                              } else {
+                                return Text(bList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                                textAlign: TextAlign.center);
+                                }
+                              return Text(bList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                              textAlign: TextAlign.center,);
+                            }));
+
+                      return new Text("");
+                    },
                   ),
                   RaisedButton(
                     color: Colors.black26,
                     child: Text(
-                      'Complete Edit',
+                      'Edit Project',
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                    onPressed: () async {
-                      setProjectData(Provider
-                          .of<User>(context)
-                          .uid, widget.projValues.name, description, selectedBadges, updates);
+                    onPressed: () {
                       Navigator.of(context).pop();
+                      Navigator.of(context)
+                          .push(
+                          MaterialPageRoute(
+                            builder: (context) => EditProj(projValues : Project(
+                                uid: Provider.of<User>(context).uid,
+                                name: widget.projValues.name,
+                                description: widget.projValues.description,
+                                updates: widget.projValues.updates,
+                                badges: widget.projValues.badges,
+                            )),
+                          )
+                      );
                     },
                   ),
                   SizedBox(height: 10,)

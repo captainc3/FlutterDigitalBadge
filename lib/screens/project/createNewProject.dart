@@ -3,6 +3,9 @@ import 'package:sample_flutter_app/screens/profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_flutter_app/models/models.dart';
+import 'package:intl/intl.dart';
+import 'package:sample_flutter_app/services/auth.dart';
+import 'package:flutter/services.dart';
 
 class CreateNew extends StatefulWidget {
   @override
@@ -11,11 +14,17 @@ class CreateNew extends StatefulWidget {
 
 class _CreateNew extends State<CreateNew> {
   final _formKey = GlobalKey<FormState>();
+  final AuthService _auth = AuthService();
 
 // text field state
   String projectName = '';
   String description = '';
   String badges = '';
+  String error = '';
+  List<dynamic> uList = [];
+
+  var now = new DateTime.now();
+
   final List<String> selectedBadges = <String>[];
   final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
     'Appearance', 'Negotations', 'STEM', 'Law & Public Safety', 'Marketing', 'Human Services',
@@ -23,12 +32,13 @@ class _CreateNew extends State<CreateNew> {
     'Architecture & Construction', 'Agriculture, Food, & Resources'];
   Widget build(BuildContext context) {
 
-    Future setProjectData(String uid, String name, String description, List<String> badges) async {
+    Future setProjectData(String uid, String name, String description, List<String> badges, List<dynamic> updates) async {
       return await Firestore.instance.collection('projects').document(name + ' - ' +  uid).setData({
         'uid': uid,
         'name': name,
         'description' : description,
         'badges': badges,
+        'updates': updates,
       });
     }
 
@@ -46,34 +56,33 @@ class _CreateNew extends State<CreateNew> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        labelText: 'Project\'s name:',
-                        labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                  TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(33),
+                      ],
+                      decoration: const InputDecoration(
+                        hintText: 'Project Name',
+                        hintStyle: TextStyle(color: Colors.white),
                       ),
-                      maxLines: 1,
-                      style: new TextStyle(color: Colors.white, fontSize: 12),
+                      validator: (val) => val.isEmpty ? 'Please enter a valid name' : null,
+                      style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
-                        projectName = val;
+                        setState(() => projectName = val);
                       }
                   ),
                   SizedBox(height: 10,),
-                  TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 2.0),
-                        ),
-                        labelText: 'Brief description about your project:',
-                        labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                  TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(276),
+                      ],
+                      decoration: const InputDecoration(
+                        hintText: 'Project Description',
+                        hintStyle: TextStyle(color: Colors.white),
                       ),
-                      minLines: 1,
-                      maxLines: 5,
-                      style: new TextStyle(color: Colors.white, fontSize: 12),
+                      validator: (val) => val.isEmpty ? 'Please enter a valid description' : null,
+                      style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
-                        description = val;
+                        setState(() => description = val);
                       }
                   ),
                   SizedBox(height: 10,),
@@ -109,14 +118,18 @@ class _CreateNew extends State<CreateNew> {
                     ),
                   ),
                   RaisedButton(
-                    color: Colors.black26,
+                    color: Colors.black38,
                     child: Text(
-                      'Complete Project Creation',
+                      'Create New Project',
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () async {
-                      setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges);
-                      Navigator.of(context).pop();
+                      if (_formKey.currentState.validate()) {
+                        selectedBadges.insert(0, "Unapproved Project");
+                        setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges,
+                            uList.followedBy([DateFormat("MM-dd-yyyy").format(now) + ": Project created."]).toList());
+                        Navigator.of(context).pop();
+                      } else setState(() => error = 'Please fill out all fields');
                     },
                   ),
                   SizedBox(height: 10,)
