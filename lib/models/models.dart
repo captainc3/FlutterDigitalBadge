@@ -5,8 +5,9 @@ class User {
   final String bio;
   final String badges;
   final String email;
+  final String imageURL;
 
-  User({this.uid, this.name, this.bio, this.badges, this.email});
+  User({this.uid, this.name, this.bio, this.badges, this.email, this.imageURL});
 
 }
 

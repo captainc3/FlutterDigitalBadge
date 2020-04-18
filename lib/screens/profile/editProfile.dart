@@ -17,6 +17,7 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfile extends State<EditProfile> {
   File _image;
+  String _imageUrl;
 
   final AuthService _auth = AuthService();
   bool isCollapsed = true;
@@ -29,13 +30,23 @@ class _EditProfile extends State<EditProfile> {
 
   List<String> badgesList = <String>[];
 
-  Future setUserData(String uid, String name, String bio, String badges, String email) async {
+//  void initState() {
+//    super.initState();
+//
+//    var ref = FirebaseStorage.instance.ref().child(_imageUrl);
+//    ref.getDownloadURL().then((loc) => setState(() => _imageUrl = loc));
+//  }
+
+  Future setUserData(String uid, String name, String bio, String badges, String email, String imageURL) async {
+    print('profile picture URL: ' + imageURL);
+
     return await Firestore.instance.collection('profile').document(uid).setData({
       'uid': uid,
       'name': name,
       'bio' : bio,
       'badges' : badges,
       'email' : email,
+      'profilePictureURL' : imageURL,
     });
   }
 
@@ -53,15 +64,20 @@ class _EditProfile extends State<EditProfile> {
 
   Future uploadImage(BuildContext context) async {
     String fileName = basename(_image.path); // get the file name
-    StorageReference storageRef = FirebaseStorage.instance.ref().child(fileName); // get the reference
-    StorageUploadTask uploadTask = storageRef.putFile(_image); // put the file in firebase
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    StorageReference storageReference = FirebaseStorage.instance.ref().child(fileName); // get the reference
+    StorageUploadTask uploadTask = storageReference.putFile(_image); // put the file in firebase
+    await uploadTask.onComplete;
 
-    if (this.mounted) {
-      setState(() {
-        print('image uploaded');
-      });
-    }
+    _imageUrl = await storageReference.getDownloadURL();
+    print(_imageUrl);
+
+//    storageReference.getDownloadURL().then((fileURL) {
+////      if (this.mounted) {
+//        setState(() {
+//          _imageUrl = fileURL;
+//          print('imageURL $_imageUrl');
+//      });
+//    });
   }
 
   @override
@@ -122,7 +138,12 @@ class _EditProfile extends State<EditProfile> {
                             onTap: _getImage,
                             child: Container(
                               color: Colors.white70,
-                              child: _image == null ? Text('+') : Image.file(_image, fit: BoxFit.fill),
+//                              child: _image == null ? Text('+') : Image.file(_image, fit: BoxFit.fill),
+
+//                              child: _uploadedFileURL == null ? Text('+')
+//                                    : Image.network(_uploadedFileURL, fit: BoxFit.fill),
+
+                                child: _imageUrl == null ? Text('TESTING') : Image.network(_imageUrl, fit: BoxFit.fill),
                             ),
                           ),
                         ],
@@ -205,7 +226,7 @@ class _EditProfile extends State<EditProfile> {
                       return new RaisedButton(
                         onPressed: () async {
                           uploadImage(context);
-                          setUserData(Provider.of<User>(context).uid, userName, userBio, userBadges, Provider.of<User>(context).email);
+                          setUserData(Provider.of<User>(context).uid, userName, userBio, userBadges, Provider.of<User>(context).email, _imageUrl);
                           Navigator.of(context).pop();
                         },
                         color: Colors.black26,
@@ -218,7 +239,6 @@ class _EditProfile extends State<EditProfile> {
                     return new Text("");
                   },
                 ),
-
               ],
             ),
           ),
