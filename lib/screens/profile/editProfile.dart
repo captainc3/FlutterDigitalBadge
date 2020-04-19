@@ -138,12 +138,12 @@ class _EditProfile extends State<EditProfile> {
                             onTap: _getImage,
                             child: Container(
                               color: Colors.white70,
-//                              child: _image == null ? Text('+') : Image.file(_image, fit: BoxFit.fill),
+                              child: _image == null ? Text('+') : Image.file(_image, fit: BoxFit.fill),
 
 //                              child: _uploadedFileURL == null ? Text('+')
 //                                    : Image.network(_uploadedFileURL, fit: BoxFit.fill),
 
-                                child: _imageUrl == null ? Text('TESTING') : Image.network(_imageUrl, fit: BoxFit.fill),
+//                                child: _imageUrl == null ? Text('TESTING') : Image.network(_imageUrl, fit: BoxFit.fill),
                             ),
                           ),
                         ],
