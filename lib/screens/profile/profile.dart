@@ -118,7 +118,6 @@ class _Profile extends State<Profile> {
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ),
-                  SizedBox(height: 10,)
                 ],
               )
           )

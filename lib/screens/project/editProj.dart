@@ -101,6 +101,7 @@ class _EditProj extends State<EditProj> {
                         setState(() => url = val);
                       }
                   ),
+                  SizedBox(height: 20),
                   RaisedButton(
                     color: Colors.black26,
                     child: Text(

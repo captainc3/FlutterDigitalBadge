@@ -116,6 +116,7 @@ class _ViewProject extends State<ViewProject> {
                             }));
                     },
                   ),
+                  SizedBox(height: 20),
                   RaisedButton(
                     color: Colors.black26,
                     child: Text(
