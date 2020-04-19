@@ -19,7 +19,8 @@ class _CreateNew extends State<CreateNew> {
 // text field state
   String projectName = '';
   String description = '';
-  String badges = '';
+  String url = '';
+  List<dynamic> badges = [];
   String error = '';
   List<dynamic> uList = [];
 
@@ -32,11 +33,12 @@ class _CreateNew extends State<CreateNew> {
     'Architecture & Construction', 'Agriculture, Food, & Resources'];
   Widget build(BuildContext context) {
 
-    Future setProjectData(String uid, String name, String description, List<String> badges, List<dynamic> updates) async {
+    Future setProjectData(String uid, String name, String description, String url, List<String> badges, List<dynamic> updates) async {
       return await Firestore.instance.collection('projects').document(name + ' - ' +  uid).setData({
         'uid': uid,
         'name': name,
         'description' : description,
+        'imagesURL' : url,
         'badges': badges,
         'updates': updates,
       });
@@ -62,7 +64,7 @@ class _CreateNew extends State<CreateNew> {
                       ],
                       decoration: const InputDecoration(
                         hintText: 'Project Name',
-                        hintStyle: TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       validator: (val) => val.isEmpty ? 'Please enter a valid name' : null,
                       style: new TextStyle(color: Colors.white),
@@ -77,12 +79,27 @@ class _CreateNew extends State<CreateNew> {
                       ],
                       decoration: const InputDecoration(
                         hintText: 'Project Description',
-                        hintStyle: TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       validator: (val) => val.isEmpty ? 'Please enter a valid description' : null,
                       style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
                         setState(() => description = val);
+                      }
+                  ),
+                  SizedBox(height: 10,),
+                  TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(276),
+                      ],
+                      decoration: const InputDecoration(
+                        hintText: 'URL for project images:',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                      validator: (val) => val.isEmpty ? 'Please enter a valid URL' : null,
+                      style: new TextStyle(color: Colors.white),
+                      onChanged: (val) {
+                        setState(() => url = val);
                       }
                   ),
                   SizedBox(height: 10,),
@@ -114,7 +131,7 @@ class _CreateNew extends State<CreateNew> {
 
                     hint: Text(
                       "Please select applicable badges:",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                   ),
                   RaisedButton(
@@ -126,7 +143,7 @@ class _CreateNew extends State<CreateNew> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         selectedBadges.insert(0, "Unapproved Project");
-                        setProjectData(Provider.of<User>(context).uid, projectName, description, selectedBadges,
+                        setProjectData(Provider.of<User>(context).uid, projectName, description, url, selectedBadges,
                             uList.followedBy([DateFormat("MM-dd-yyyy").format(now) + ": Project created."]).toList());
                         Navigator.of(context).pop();
                       } else setState(() => error = 'Please fill out all fields');
