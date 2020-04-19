@@ -8,7 +8,7 @@ class DatabaseService {
 
   final CollectionReference profiles = Firestore.instance.collection("profile");
 
-  Future setUserData(String name, String uid, String bio, String badges, String email) async {
+  Future setUserData(String name, String uid, String bio, List<dynamic> badges, String email) async {
     return await Firestore.instance.collection('profile').document(uid).setData({
       'name': name,
       'uid' : this.uid,

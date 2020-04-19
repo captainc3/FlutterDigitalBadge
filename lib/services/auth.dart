@@ -49,7 +49,7 @@ Future signInAnon() async {
       FirebaseUser user = result.user;
 
       // create a new document for the user with uid
-      await DatabaseService(uid: user.uid, email: user.email).setUserData(name, user.uid, 'Please update your bio.', 'none', user.email);
+      await DatabaseService(uid: user.uid, email: user.email).setUserData(name, user.uid, 'Please update your bio.', ["None"], user.email);
       return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());
