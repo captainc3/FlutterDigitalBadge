@@ -19,7 +19,6 @@ class _SearchViewProject extends State<SearchViewProject> {
 // text field state
   String projectName = '';
   String description = '';
-
   List<dynamic> updates = [];
   var uList;
   List<dynamic> badgesList = [];
@@ -47,14 +46,18 @@ class _SearchViewProject extends State<SearchViewProject> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  Text("Name:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
-                  Text(widget.projValues.name, style: TextStyle(color: Colors.white)),
+                  SelectableText("Name:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  SelectableText(widget.projValues.name, style: TextStyle(color: Colors.white)),
                   SizedBox(height: 10),
-                  Text("Description:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
-                  Text(widget.projValues.description, style: TextStyle(color: Colors.white),
+                  SelectableText("Description:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  SelectableText(widget.projValues.description, style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center),
                   SizedBox(height: 10),
-                  Text("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
+                  SelectableText("Images of the Project:", style: TextStyle(color: Colors.yellow, fontSize: 20.0)),
+                  SelectableText(widget.projValues.imagesURL, style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center),
+                  SizedBox(height: 10),
+                  SelectableText("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
                   StreamBuilder(
                     //this is poor coding practice, but i could not get the listviewbuilder to work with the
                     //properly formatted badgeslist and blist without using a streambuilder
@@ -76,8 +79,8 @@ class _SearchViewProject extends State<SearchViewProject> {
                     },
                   ),
                   SizedBox(height: 10),
-                  Text("Badges:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
-                  SizedBox(height: 10),
+                  SelectableText("Badges:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  SizedBox(height: 2),
                   StreamBuilder(
                     //this is poor coding practice, but i could not get the listviewbuilder to work with the
                     //properly formatted badgeslist and blist without using a streambuilder
@@ -95,22 +98,18 @@ class _SearchViewProject extends State<SearchViewProject> {
                           itemBuilder: (context, idx) {
                             if (idx == 0) {
                               if (bList[idx] == 'Unapproved Project') {
-                                return Text(bList[idx], style: TextStyle(color: Colors.red,
+                                return SelectableText(bList[idx], style: TextStyle(color: Colors.red,
                                     decoration: TextDecoration.underline),
                                     textAlign: TextAlign.center);
                               }
-                              return Text(bList[idx], style: TextStyle(color: Colors.green,
+                              return SelectableText(bList[idx], style: TextStyle(color: Colors.green,
                                   decoration: TextDecoration.underline),
                                   textAlign: TextAlign.center);
                             } else {
-                              return Text(bList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                              return SelectableText(bList[idx], style: TextStyle(color: Colors.lightBlueAccent),
                                   textAlign: TextAlign.center);
                             }
-                            return Text(bList[idx], style: TextStyle(color: Colors.lightBlueAccent),
-                              textAlign: TextAlign.center,);
                           }));
-
-                      return new Text("");
                     },
                   ),
                 ],

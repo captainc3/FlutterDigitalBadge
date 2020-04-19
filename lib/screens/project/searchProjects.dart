@@ -10,10 +10,11 @@ class Post {
   final String title;
   final String description;
   final String uid;
+  final String url;
   final List<dynamic> updates;
   final List<dynamic> badges;
 
-  Post(this.title, this.description, this.uid, this.updates, this.badges);
+  Post(this.title, this.description, this.uid, this.url, this.updates, this.badges);
 }
 
 class SearchProjects extends StatefulWidget {
@@ -35,12 +36,13 @@ class _SearchProjects extends State<SearchProjects> {
       String pName = documentList[i].data['name'];
       String pDes = documentList[i].data['description'];
       String pUid = documentList[i].data['uid'];
+      String pURL = documentList[i].data['imagesURL'];
       List<dynamic> pUpd = documentList[i].data['updates'];
       List<dynamic> pBad = documentList[i].data['badges'];
 
 
       if (pName.toUpperCase().contains(search.toUpperCase())) {
-          posts.add(Post(pName, pDes, pUid, pUpd, pBad));
+          posts.add(Post(pName, pDes, pUid, pURL, pUpd, pBad));
       }
     }
     return posts;
@@ -99,6 +101,7 @@ class _SearchProjects extends State<SearchProjects> {
                       uid: post.uid,
                       name: post.title,
                       description: post.description,
+                      imagesURL: post.url,
                       updates: post.updates,
                       badges: post.badges
                   ))));

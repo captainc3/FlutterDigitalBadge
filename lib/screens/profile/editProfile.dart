@@ -1,45 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sample_flutter_app/screens/home/home.dart';
-import 'package:sample_flutter_app/services/auth.dart';
 import 'package:sample_flutter_app/models/models.dart';
+import 'package:flutter/services.dart';
 
 final Color backgroundColor = Color(0xFF4A4A58);
 
 class EditProfile extends StatefulWidget {
+  final User userValues;
+
+  EditProfile({Key key, this.userValues}) : super (key: key);
+
   @override
   _EditProfile createState() => _EditProfile();
 }
 
 class _EditProfile extends State<EditProfile> {
-
-  final AuthService _auth = AuthService();
-  bool isCollapsed = true;
-  double screenWidth, screenHeight;
-  Duration duration = const Duration(milliseconds: 500);
+  final _formKey = GlobalKey<FormState>();
 
   String userName = '';
   String userBio = '';
-  String userBadges = '';
-
-  List<String> badgesList = <String>[];
-
-  Future setUserData(String uid, String name, String bio, String badges, String email) async {
-    return await Firestore.instance.collection('profile').document(uid).setData({
-      'uid': uid,
-      'name': name,
-      'bio' : bio,
-      'badges' : badges,
-      'email' : email,
-    });
-  }
+  String error = '';
+  List<dynamic> badgesList = [];
+  var bList;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    screenHeight = size.height;
-    screenWidth = size.width;
+
+    Future setUserData(String uid, String name, String bio, List<dynamic> badges, String email) async {
+      return await Firestore.instance.collection('profile').document(uid).setData({
+        'uid': uid,
+        'name': name,
+        'bio' : bio,
+        'badges' : badges,
+        'email' : email,
+      });
+    }
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -47,125 +43,83 @@ class _EditProfile extends State<EditProfile> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0.0,
-        title: Text('Profile Page'),
+        title: Text("Edit Profile"),
       ),
-      body: Stack(
-        children: <Widget>[
-          dashboard(context),
-          dashboard(context),
-        ],
-      ),
-    );
-  }
-
-  Widget dashboard(context) {
-    return AnimatedPositioned(
-      duration: duration,
-      top: isCollapsed ? 0 : 0 * screenHeight,
-      bottom: isCollapsed ? 0 : 0 * screenHeight,
-      left: isCollapsed ? 0 : 0.4 * screenWidth,
-      right: isCollapsed ? 0 : -0.6 * screenWidth,
-      child: Material(
-        elevation: 8,
-        color: backgroundColor,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          physics: ClampingScrollPhysics(),
-          child: Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+      body: Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+          child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Text("Please fill out all fields!", style: TextStyle(color: Colors.redAccent, fontSize: 15.0)),
+                  TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(18),
+                      ],
+                      decoration: const InputDecoration(
+                        hintText: 'Updated Name:',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
-                      labelText: 'Name: ',
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    style: new TextStyle(color: Colors.white, fontSize: 12),
-                    onChanged: (val) {
-                      userName = val;
-                    }
-                ),
-                SizedBox(height: 20, width: 20,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text("Bio:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+                      validator: (val) => val.isEmpty ? 'Please enter a valid name' : null,
+                      style: new TextStyle(color: Colors.white),
+                      onChanged: (val) {
+                        setState(() => userName = val);
+                      }
                   ),
-                ),
-                SizedBox(height: 20,),
-                TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  SizedBox(height: 20),
+                  TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(276),
+                      ],
+                      decoration: const InputDecoration(
+                        hintText: 'Updated Bio:',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
-                      labelText: 'Bio: ',
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    style: new TextStyle(color: Colors.white, fontSize: 12),
-                    onChanged: (val) {
-                      userBio = val;
-                    }
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text("Badges Acquired:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+                      validator: (val) => val.isEmpty ? 'Please enter a valid bio' : null,
+                      style: new TextStyle(color: Colors.white),
+                      onChanged: (val) {
+                        setState(() => userBio = val);
+
+                      }
                   ),
-                ),
-                SizedBox(height: 20,),
-                StreamBuilder(
-                  stream: Firestore.instance.collection("profile").where("uid",
-                      isEqualTo: Provider.of<User>(context).uid).snapshots(),
-                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
-                  {
-                    if (!snapshot.hasData || snapshot.data?.documents == null) {
-                      return new Text("TESTING");
-                    } else if (snapshot.data.documents.length > 0) {
-                      userBadges = snapshot.data.documents[0].data['badges'];
-                      print(userBadges);
+                  SizedBox(height: 20,),
+                  StreamBuilder(
+                    stream: Firestore.instance.collection("profile").where("uid",
+                        isEqualTo: Provider.of<User>(context).uid).snapshots(),
+                    builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
+                    {
+                      if (!snapshot.hasData || snapshot.data?.documents == null) {
+                        return new Text("TESTING");
+                      } else if (snapshot.data.documents.length > 0) {
+                        badgesList = snapshot.data.documents[0].data['badges'];
+                        bList = List<String>.from(badgesList);
 
-                      return new Text(userBadges, style:
-                      TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),);
-                    }
-                    return new Text("");
-                  },
-                ),
-                SizedBox(height: 100),
-                StreamBuilder(
-                  stream: Firestore.instance.collection("profile").where("uid",
-                      isEqualTo: Provider.of<User>(context).uid).snapshots(),
-                  builder: (BuildContext  context, AsyncSnapshot<QuerySnapshot> snapshot)
-                  {
-                    if (!snapshot.hasData || snapshot.data?.documents == null) {
-                      return new Text("TESTING");
-                    } else if (snapshot.data.documents.length > 0) {
-                      userBadges = snapshot.data.documents[0].data['badges'];
-                      print(userBadges);
+                        return new RaisedButton(
+                          color: Colors.black26,
+                          child: Text(
+                            'Submit Changes',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              setUserData(Provider
+                                  .of<User>(context)
+                                  .uid, userName, userBio, bList, Provider
+                                  .of<User>(context)
+                                  .email);
+                              Navigator.of(context).pop();
+                            } else setState(() => error = 'Please fill out all fields');
+                          }
 
-                      return new RaisedButton(
-                        onPressed: () async {
-                          setUserData(Provider.of<User>(context).uid, userName, userBio, userBadges, Provider.of<User>(context).email);
-                          Navigator.of(context).pop();
-                        },
-                        color: Colors.black26,
-                        child: Text(
-                          'Submit Changes',
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                        ),
-                      );
-                    }
-                    return new Text("");
-                  },
-                ),
-
-              ],
-            ),
-          ),
-        ),
+                        );
+                      }
+                      return new Text("");
+                    },
+                  ),
+                  SizedBox(height: 10,)
+                ],
+              )
+          )
       ),
     );
   }

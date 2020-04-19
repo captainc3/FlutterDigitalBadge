@@ -22,7 +22,6 @@ class _Home extends State<Home> {
   bool isCollapsed = true;
   double screenWidth, screenHeight;
   Duration duration = const Duration(milliseconds: 500);
-  String badges = "";
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +53,7 @@ class _Home extends State<Home> {
                       uid: doc["uid"],
                       name: doc["name"],
                       description: doc["description"],
+                        imagesURL: doc["imagesURL"],
                         updates: doc["updates"],
                         badges: doc["badges"],
                     )),

@@ -23,35 +23,28 @@ class _EditProj extends State<EditProj> {
   String description = '';
   String newUpdate = '';
   String error = '';
+  String url = '';
   List<dynamic> uList = [];
   List<dynamic> temp = [];
-
   var now = new DateTime.now();
-  var textController = TextEditingController();
-  final List<String> selectedBadges = <String>[];
-  final List<String> values = <String>['Communicator', 'Initiative', 'Leadership',
-    'Appearance', 'Negotations', 'STEM', 'Law & Public Safety', 'Marketing', 'Human Services',
-    'Health Science', 'Government', 'Film, Media, & Entertainment', 'Education', 'Business Management',
-    'Architecture & Construction', 'Agriculture, Food, & Resources'];
+
 
   Widget build(BuildContext context) {
 
-
-
-    Future setProjectData(String uid, String name, String description, List<dynamic> badges, List<dynamic> updates) async {
+    Future setProjectData(String uid, String name, String description, String imagesURL, List<dynamic> badges, List<dynamic> updates) async {
       return await Firestore.instance.collection('projects')
           .document(name + ' - ' +  uid)
           .setData({
         'uid': uid,
         'name': name,
         'description': description,
+        'imagesURL': imagesURL,
         'badges': badges,
         'updates' : updates,
       });
     }
 
     return Scaffold(
-
       resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -74,7 +67,7 @@ class _EditProj extends State<EditProj> {
                         hintText: 'New Project Description',
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
-                      validator: (val) => val.isEmpty ? 'Please enter a valid name' : null,
+                      validator: (val) => val.isEmpty ? 'Please enter a valid name:' : null,
                       style: new TextStyle(color: Colors.white),
                       onChanged: (val) {
                         setState(() => description = val);
@@ -83,7 +76,7 @@ class _EditProj extends State<EditProj> {
                   SizedBox(height: 20),
                   TextFormField(
                       decoration: const InputDecoration(
-                        hintText: 'Project update (Date is automatically added)',
+                        hintText: 'Project update (Date is automatically added):',
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       validator: (val) => val.isEmpty ? 'Please enter an update' : null,
@@ -94,6 +87,20 @@ class _EditProj extends State<EditProj> {
                       }
                   ),
                   SizedBox(height: 20,),
+                  TextFormField(
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(276),
+                      ],
+                      decoration: const InputDecoration(
+                        hintText: 'URL for project images:',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                      validator: (val) => val.isEmpty ? 'Please enter a valid URL' : null,
+                      style: new TextStyle(color: Colors.white),
+                      onChanged: (val) {
+                        setState(() => url = val);
+                      }
+                  ),
                   RaisedButton(
                     color: Colors.black26,
                     child: Text(
@@ -103,11 +110,9 @@ class _EditProj extends State<EditProj> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         uList = widget.projValues.updates;
-                        print(uList.followedBy([newUpdate]).toList());
-                        //temp = new List(uList.length + 1);
                         setProjectData(Provider
                             .of<User>(context)
-                            .uid, widget.projValues.name, description, widget.projValues.badges, uList.followedBy([newUpdate]).toList());
+                            .uid, widget.projValues.name, description, url, widget.projValues.badges, uList.followedBy([newUpdate]).toList());
                         Navigator.of(context).pop();
                       } else setState(() => error = 'Please fill out all fields');
                     },
