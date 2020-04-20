@@ -60,7 +60,7 @@ class _Profile extends State<Profile> {
                     },
                   ),
                   SizedBox(height: 20),
-                  Text("Bio:", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0)),
+                  SelectableText("Bio:", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0)),
                   SizedBox(height: 3),
                   StreamBuilder(
                     stream: Firestore.instance.collection("profile").where("uid",

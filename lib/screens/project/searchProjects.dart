@@ -54,7 +54,7 @@ class _SearchProjects extends State<SearchProjects> {
       backgroundColor: Color(0xFF4A4A58),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: SearchBar<Post>(
             minimumChars: 1,
             hintText: "Project Name",
@@ -66,25 +66,22 @@ class _SearchProjects extends State<SearchProjects> {
               fontWeight: FontWeight.bold,
             ),
             header: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 RaisedButton(
-                  child: Text("Sort Alphabetically"),
+                  child: Text("Back"),
                   onPressed: () {
-                    _searchBarController.sortList((Post a, Post b) {
-                      print(a.title[0].compareTo(b.title[0]));
-                      print(a.title[0] +" " + b.title[0]);
-                      return a.title.compareTo(b.title);
-                    });
+                    Navigator.of(context).pop();
                   },
                 ),
                 RaisedButton(
-                  child: Text("Unsort"),
+                  child: Text("Sort by creation date"),
                   onPressed: () {
                     _searchBarController.removeSort();
                   },
                 ),
                 RaisedButton(
-                  child: Text("Replay Search"),
+                  child: Text("Refresh"),
                   onPressed: () {
                     //isReplay = !isReplay;
                     _searchBarController.replayLastSearch();

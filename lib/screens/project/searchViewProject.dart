@@ -46,18 +46,26 @@ class _SearchViewProject extends State<SearchViewProject> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  SelectableText("Name:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  SelectableText("Name:", style: TextStyle(color: Colors.white, decoration: TextDecoration.underline,
+                      fontSize: 20.0),),
+                  SizedBox(height: 2),
                   SelectableText(widget.projValues.name, style: TextStyle(color: Colors.white)),
                   SizedBox(height: 10),
-                  SelectableText("Description:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  SelectableText("Description:", style: TextStyle(color: Colors.white, decoration: TextDecoration.underline,
+                      fontSize: 20.0)),
+                  SizedBox(height: 2),
                   SelectableText(widget.projValues.description, style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center),
-                  SizedBox(height: 10),
-                  SelectableText("Images of the Project:", style: TextStyle(color: Colors.yellow, fontSize: 20.0)),
+                  SizedBox(height: 15),
+                  SelectableText("Images of the Project:", style: TextStyle(color: Colors.white, decoration: TextDecoration.underline,
+                      fontSize: 20.0)),
+                  SizedBox(height: 2),
                   SelectableText(widget.projValues.imagesURL, style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center),
                   SizedBox(height: 10),
-                  SelectableText("Project History:", style: TextStyle(color: Colors.white, fontSize: 20.0),),
+                  SelectableText("Project History:", style: TextStyle(color: Colors.white, decoration: TextDecoration.underline,
+                      fontSize: 20.0),),
+                  SizedBox(height: 2),
                   StreamBuilder(
                     //this is poor coding practice, but i could not get the listviewbuilder to work with the
                     //properly formatted badgeslist and blist without using a streambuilder
@@ -73,13 +81,14 @@ class _SearchViewProject extends State<SearchViewProject> {
                           shrinkWrap: true,
                           itemCount: updates.length,
                           itemBuilder: (context, idx) {
-                              return Text(uList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                              return Text(uList[idx], style: TextStyle(color: Colors.white),
                                   textAlign: TextAlign.center);
                           }));
                     },
                   ),
-                  SizedBox(height: 10),
-                  SelectableText("Badges:", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  SizedBox(height: 15),
+                  SelectableText("Badges:", style: TextStyle(color: Colors.white, decoration: TextDecoration.underline,
+                      fontSize: 20.0)),
                   SizedBox(height: 2),
                   StreamBuilder(
                     //this is poor coding practice, but i could not get the listviewbuilder to work with the
@@ -98,20 +107,24 @@ class _SearchViewProject extends State<SearchViewProject> {
                           itemBuilder: (context, idx) {
                             if (idx == 0) {
                               if (bList[idx] == 'Unapproved Project') {
-                                return SelectableText(bList[idx], style: TextStyle(color: Colors.red,
-                                    decoration: TextDecoration.underline),
+                                return SelectableText(bList[idx], style: TextStyle(color: Colors.red,),
                                     textAlign: TextAlign.center);
                               }
-                              return SelectableText(bList[idx], style: TextStyle(color: Colors.green,
-                                  decoration: TextDecoration.underline),
+                              return SelectableText(bList[idx], style: TextStyle(color: Colors.green,),
                                   textAlign: TextAlign.center);
                             } else {
-                              return SelectableText(bList[idx], style: TextStyle(color: Colors.lightBlueAccent),
+                              return SelectableText(bList[idx], style: TextStyle(color: Colors.white),
                                   textAlign: TextAlign.center);
                             }
                           }));
                     },
                   ),
+                  SizedBox(height: 20),
+                  SelectableText("Contact email for donations and questions:", style: TextStyle(color: Colors.yellow, decoration: TextDecoration.underline,
+                      fontSize: 15.0), textAlign: TextAlign.center),
+                  SizedBox(height: 2),
+                  SelectableText( Provider.of<User>(context).email, style: TextStyle(color: Colors.indigo),
+                      textAlign: TextAlign.center),
                 ],
               )
           )
