@@ -123,7 +123,7 @@ class _SearchViewProject extends State<SearchViewProject> {
                   SelectableText("Contact email for donations and questions:", style: TextStyle(color: Colors.yellow, decoration: TextDecoration.underline,
                       fontSize: 15.0), textAlign: TextAlign.center),
                   SizedBox(height: 2),
-                  SelectableText( Provider.of<User>(context).email, style: TextStyle(color: Colors.indigo),
+                  SelectableText( Provider.of<User>(context).email, style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center),
                 ],
               )

@@ -123,7 +123,7 @@ class _ViewProject extends State<ViewProject> {
                     },
                   ),
                   SizedBox(height: 15),
-                  SelectableText("Contact email for donations and questions:", style: TextStyle(color: Colors.lightBlueAccent, decoration: TextDecoration.underline,
+                  SelectableText("Contact email for donations and questions:", style: TextStyle(color: Colors.yellow, decoration: TextDecoration.underline,
                       fontSize: 15.0), textAlign: TextAlign.center),
                   SizedBox(height: 2),
                   SelectableText( Provider.of<User>(context).email, style: TextStyle(color: Colors.white),
